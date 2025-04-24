@@ -1,0 +1,2428 @@
+Angular v19 Features
+├── Core Concepts
+│   ├── Components
+│   │   ├── Standalone Components (JD: Scalable apps)
+│   │   │   ├── @Component Decorator
+│   │   │   │   ├── selector: string
+│   │   │   │   ├── template: string
+│   │   │   │   ├── templateUrl: string
+│   │   │   │   ├── styles: string[]
+│   │   │   │   ├── styleUrls: string[]
+│   │   │   │   ├── standalone: boolean (true by default)
+│   │   │   │   ├── imports: any[] (e.g., CommonModule)
+│   │   │   │   ├── providers: any[] (e.g., services)
+│   │   │   │   ├── encapsulation: ViewEncapsulation
+│   │   │   │   │   ├── Emulated
+│   │   │   │   │   ├── ShadowDom
+│   │   │   │   │   └── None
+│   │   │   │   ├── animations: AnimationMetadata[]
+│   │   │   │   ├── changeDetection: ChangeDetectionStrategy
+│   │   │   │   │   ├── Default
+│   │   │   │   │   └── OnPush (JD: Performance)
+│   │   │   │   └── host: { [key: string]: string }
+│   │   │   ├── Lifecycle Hooks
+│   │   │   │   ├── ngOnInit(): void
+│   │   │   │   ├── ngOnChanges(changes: SimpleChanges): void
+│   │   │   │   ├── ngDoCheck(): void
+│   │   │   │   ├── ngAfterContentInit(): void
+│   │   │   │   ├── ngAfterContentChecked(): void
+│   │   │   │   ├── ngAfterViewInit(): void
+│   │   │   │   ├── ngAfterViewChecked(): void
+│   │   │   │   └── ngOnDestroy(): void
+│   │   │   ├── Inputs/Outputs
+│   │   │   │   ├── @Input({ transform?: (value: any) => any }): void
+│   │   │   │   ├── @Output(): EventEmitter<any>
+│   │   │   │   ├── EventEmitter Methods
+│   │   │   │   │   ├── emit(value?: any): void
+│   │   │   │   │   ├── subscribe(observer: Partial<Observer<any>>): Subscription
+│   │   │   │   │   └── unsubscribe(): void
+│   │   │   ├── Content Projection
+│   │   │   │   ├── <ng-content>
+│   │   │   │   ├── <ng-content select="[selector]">
+│   │   │   │   └── ngProjectAs: string
+│   │   │   ├── View Queries
+│   │   │   │   ├── @ViewChild(selector: string | Type<any>, { static?: boolean, read?: any }): any
+│   │   │   │   ├── @ViewChildren(selector: string | Type<any>, { read?: any }): QueryList<any>
+│   │   │   │   ├── @ContentChild(selector: string | Type<any>, { static?: boolean, read?: any }): any
+│   │   │   │   ├── @ContentChildren(selector: string | Type<any>, { read?: any }): QueryList<any>
+│   │   │   ├── Host Bindings/Listeners
+│   │   │   │   ├── @HostBinding(property: string): any
+│   │   │   │   ├── @HostListener(eventName: string, args?: string[]): (...args: any[]) => void
+│   │   │   ├── Change Detection
+│   │   │   │   ├── ChangeDetectionStrategy
+│   │   │   │   │   ├── Default
+│   │   │   │   │   └── OnPush
+│   │   │   │   ├── ChangeDetectorRef
+│   │   │   │   │   ├── detectChanges(): void
+│   │   │   │   │   ├── markForCheck(): void
+│   │   │   │   │   ├── detach(): void
+│   │   │   │   │   ├── reattach(): void
+│   │   │   │   │   └── checkNoChanges(): void
+│   │   │   ├── Template Syntax
+│   │   │   │   ├── Property Binding: [property]="value"
+│   │   │   │   ├── Event Binding: (event)="handler()"
+│   │   │   │   ├── Two-Way Binding: [(ngModel)]="value"
+│   │   │   │   ├── Attribute Binding: [attr.name]="value"
+│   │   │   │   ├── Class Binding: [class.name]="condition"
+│   │   │   │   ├── Style Binding: [style.name]="value"
+│   │   │   │   ├── @let (New in v19)
+│   │   │   │   │   ├── @let variable = expression;
+│   │   │   │   ├── Block Control Flow (New in v19)
+│   │   │   │   │   ├── @if (condition) { ... } @else { ... }
+│   │   │   │   │   ├── @for (item of items; track item.id) { ... } @empty { ... }
+│   │   │   │   │   ├── @switch (value) { @case (value) { ... } @default { ... } }
+│   │   │   │   ├── Template Reference Variables: #ref
+│   │   │   │   ├── Safe Navigation Operator: ?.
+│   │   │   │   ├── Structural Directives: *ngIf, *ngFor, *ngSwitch
+│   │   │   │   └── Pipe Operator: |
+│   │   ├── Module-Based Components (Legacy)
+│   │   │   ├── @NgModule Decorator
+│   │   │   │   ├── declarations: Array<Type<any>>
+│   │   │   │   ├── imports: Array<Type<any> | ModuleWithProviders>
+│   │   │   │   ├── providers: Provider[]
+│   │   │   │   ├── bootstrap: Array<Type<any>>
+│   │   │   │   ├── exports: Array<Type<any>>
+│   │   │   │   └── schemas: Array<SchemaMetadata>
+│   │   │   ├── CommonModule
+│   │   │   │   ├── NgIf
+│   │   │   │   ├── NgFor
+│   │   │   │   ├── NgSwitch
+│   │   │   │   ├── NgClass
+│   │   │   │   └── NgStyle
+│   │   │   ├── BrowserModule
+│   │   │   │   ├── platformBrowserDynamic()
+│   │   │   │   └── bootstrapModule()
+│   │   │   └── Feature/Shared/Core Modules
+│   ├── Directives
+│   │   ├── Structural Directives
+│   │   │   ├── *ngIf
+│   │   │   │   ├── condition: boolean
+│   │   │   │   ├── @else: <ng-template #elseBlock>
+│   │   │   │   ├── @then: <ng-template #thenBlock>
+│   │   │   │   └── as: context variable
+│   │   │   ├── *ngFor
+│   │   │   │   ├── of: Iterable<any>
+│   │   │   │   ├── trackBy: (index: number, item: any) => any (JD: Performance)
+│   │   │   │   ├── index: number
+│   │   │   │   ├── first: boolean
+│   │   │   │   ├── last: boolean
+│   │   │   │   ├── even: boolean
+│   │   │   │   ├── odd: boolean
+│   │   │   │   └── let: context variables
+│   │   │   ├── *ngSwitch
+│   │   │   │   ├── [ngSwitch]: any
+│   │   │   │   ├── *ngSwitchCase: any
+│   │   │   │   └── *ngSwitchDefault
+│   │   │   ├── Custom Structural Directives
+│   │   │   │   ├── @Directive({ selector: '[appCustom]', standalone: boolean })
+│   │   │   │   ├── Inputs: @Input()
+│   │   │   │   ├── TemplateRef: TemplateRef<any>
+│   │   │   │   ├── ViewContainerRef
+│   │   │   │   │   ├── createEmbeddedView(templateRef: TemplateRef<any>, context?: any): EmbeddedViewRef<any>
+│   │   │   │   │   ├── clear(): void
+│   │   │   │   │   ├── get(index: number): ViewRef
+│   │   │   │   │   ├── length: number
+│   │   │   │   │   ├── remove(index?: number): void
+│   │   │   │   │   ├── insert(viewRef: ViewRef, index?: number): ViewRef
+│   │   │   │   │   ├── detach(index?: number): ViewRef
+│   │   │   │   │   ├── attach(viewRef: ViewRef, index?: number): void
+│   │   │   │   │   └── move(viewRef: ViewRef, currentIndex: number): ViewRef
+│   │   │   │   └── Lifecycle
+│   │   │   │       ├── ngOnChanges
+│   │   │   │       ├── ngOnInit
+│   │   │   │       └── ngOnDestroy
+│   │   ├── Attribute Directives
+│   │   │   ├── ngClass
+│   │   │   │   ├── [ngClass]: string | string[] | Set<string> | { [klass: string]: any }
+│   │   │   │   └── [class.className]="condition"
+│   │   │   ├── ngStyle
+│   │   │   │   ├── [ngStyle]: { [key: string]: string }
+│   │   │   │   └── [style.property]="value"
+│   │   │   ├── ngModel
+│   │   │   │   ├── [(ngModel)]: any
+│   │   │   │   ├── name: string
+│   │   │   │   └── ngModelOptions
+│   │   │   │       ├── standalone: boolean
+│   │   │   │       ├── updateOn: 'change' | 'blur' | 'submit'
+│   │   │   │       └── name: string
+│   │   │   ├── Custom Attribute Directives
+│   │   │   │   ├── @Directive({ selector: '[appHighlight]', standalone: boolean })
+│   │   │   │   ├── HostBinding: @HostBinding('style.backgroundColor')
+│   │   │   │   ├── HostListener: @HostListener('mouseenter', ['$event'])
+│   │   │   │   ├── ElementRef
+│   │   │   │   │   ├── nativeElement: any
+│   │   │   │   ├── Renderer2
+│   │   │   │   │   ├── setStyle(el: any, style: string, value: any, flags?: RendererStyleFlags2): void
+│   │   │   │   │   ├── addClass(el: any, name: string): void
+│   │   │   │   │   ├── removeClass(el: any, name: string): void
+│   │   │   │   │   ├── setAttribute(el: any, name: string, value: string, namespace?: string): void
+│   │   │   │   │   ├── removeAttribute(el: any, name: string, namespace?: string): void
+│   │   │   │   │   ├── setProperty(el: any, name: string, value: any): void
+│   │   │   │   │   ├── listen(target: any, eventName: string, callback: (event: any) => boolean | void): () => void
+│   │   │   │   │   ├── createElement(name: string, namespace?: string): any
+│   │   │   │   │   ├── createText(value: string): any
+│   │   │   │   │   ├── appendChild(parent: any, newChild: any): void
+│   │   │   │   │   ├── insertBefore(parent: any, newChild: any, refChild: any): void
+│   │   │   │   │   ├── removeChild(parent: any, oldChild: any): void
+│   │   │   │   │   └── selectRootElement(selectorOrNode: string | any): any
+│   │   │   │   └── Lifecycle
+│   │   │   │       ├── ngOnChanges
+│   │   │   │       ├── ngOnInit
+│   │   │   │       ├── ngDoCheck
+│   │   │   │       ├── ngAfterContentInit
+│   │   │   │       ├── ngAfterContentChecked
+│   │   │   │       ├── ngAfterViewInit
+│   │   │   │       ├── ngAfterViewChecked
+│   │   │   │       └── ngOnDestroy
+│   │   ├── Built-in Directives
+│   │   │   ├── ngNonBindable
+│   │   │   ├── ngPlural
+│   │   │   ├── ngPluralCase
+│   │   │   ├── ngTemplateOutlet
+│   │   │   │   ├── *ngTemplateOutlet: TemplateRef<any>
+│   │   │   │   ├── [ngTemplateOutletContext]: { [key: string]: any }
+│   │   │   │   └── [ngTemplateOutletInjector]: Injector
+│   │   │   ├── ngComponentOutlet
+│   │   │   │   ├── *ngComponentOutlet: Type<any>
+│   │   │   │   ├── [ngComponentOutletInjector]: Injector
+│   │   │   │   ├── [ngComponentOutletContent]: any[][]
+│   │   │   │   └── [ngComponentOutletNgModule]: Type<any>
+│   ├── Pipes
+│   │   ├── Built-in Pipes
+│   │   │   ├── DatePipe: date | date:'format':timezone:locale
+│   │   │   │   ├── format: 'short' | 'medium' | 'long' | custom
+│   │   │   │   ├── timezone: string
+│   │   │   │   └── locale: string
+│   │   │   ├── UpperCasePipe: string | uppercase
+│   │   │   ├── LowerCasePipe: string | lowercase
+│   │   │   ├── CurrencyPipe: number | currency:currencyCode:display:digitsInfo:locale
+│   │   │   │   ├── currencyCode: string (e.g., 'USD')
+│   │   │   │   ├── display: 'code' | 'symbol' | 'symbol-narrow'
+│   │   │   │   ├── digitsInfo: string (e.g., '1.2-2')
+│   │   │   │   └── locale: string
+│   │   │   ├── PercentPipe: number | percent:digitsInfo:locale
+│   │   │   │   ├── digitsInfo: string
+│   │   │   │   └── locale: string
+│   │   │   ├── DecimalPipe: number | number:digitsInfo:locale
+│   │   │   │   ├── digitsInfo: string (e.g., '1.2-2')
+│   │   │   │   └── locale: string
+│   │   │   ├── JsonPipe: any | json
+│   │   │   ├── AsyncPipe: Observable<T> | Promise<T> | async
+│   │   │   │   ├── unwraps Observable/Promise
+│   │   │   │   ├── handles subscription cleanup
+│   │   │   ├── SlicePipe: array | string | slice:start:end
+│   │   │   │   ├── start: number
+│   │   │   │   └── end: number
+│   │   │   ├── KeyValuePipe: object | keyvalue:compareFn
+│   │   │   │   ├── compareFn: (a: KeyValue<string, any>, b: KeyValue<string, any>) => number
+│   │   │   ├── I18nPluralPipe: number | i18nPlural:mapping
+│   │   │   │   ├── mapping: { [key: string]: string }
+│   │   │   │   └── locale: string
+│   │   │   ├── I18nSelectPipe: value | i18nSelect:mapping
+│   │   │   │   ├── mapping: { [key: string]: string }
+│   │   │   │   └── locale: string
+│   │   │   └── TitleCasePipe: string | titlecase
+│   │   ├── Custom Pipes
+│   │   │   ├── @Pipe({ name: 'customPipe', standalone: boolean, pure?: boolean })
+│   │   │   │   ├── name: string
+│   │   │   │   ├── standalone: boolean
+│   │   │   │   ├── pure: boolean (default: true)
+│   │   │   ├── Transform Method
+│   │   │   │   ├── transform(value: any, ...args: any[]): any
+│   │   │   ├── Pure Pipes
+│   │   │   │   ├── memoizes output
+│   │   │   │   └── triggered only on input reference change
+│   │   │   ├── Impure Pipes
+│   │   │   │   ├── runs on every change detection cycle
+│   │   │   │   └── used for dynamic data
+│   │   │   └── Lifecycle
+│   │   │       ├── ngOnDestroy(): void
+│   ├── Services & Dependency Injection (JD: Scalable apps)
+│   │   ├── @Injectable Decorator
+│   │   │   ├── providedIn: 'root' | 'platform' | 'any' | Type<any> | null
+│   │   │   ├── InjectionToken
+│   │   │   │   ├── new InjectionToken<T>(description: string, options?: { providedIn?: 'root' | 'platform' | 'any' | Type<any>, factory?: () => T }): InjectionToken<T>
+│   │   │   ├── @Optional
+│   │   │   ├── @Self
+│   │   │   ├── @SkipSelf
+│   │   │   └── @Inject
+│   │   ├── Injector
+│   │   │   ├── Injector.create(options: { providers: StaticProvider[], parent?: Injector, name?: string }): Injector
+│   │   │   ├── get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T
+│   │   │   └── resolveAndCreate(providers: Provider[]): Injector
+│   │   ├── Hierarchical Injectors
+│   │   │   ├── Root Injector
+│   │   │   ├── Platform Injector
+│   │   │   ├── Module Injector
+│   │   │   ├── Component Injector
+│   │   │   └── Element Injector
+│   │   ├── Providers
+│   │   │   ├── Factory Providers
+│   │   │   │   ├── useFactory: (...deps: any[]) => any
+│   │   │   │   ├── deps: any[]
+│   │   │   │   └── multi: boolean
+│   │   │   ├── Value Providers
+│   │   │   │   ├── useValue: any
+│   │   │   ├── Class Providers
+│   │   │   │   ├── useClass: Type<any>
+│   │   │   └── Existing Providers
+│   │   │       ├── useExisting: any
+│   │   ├── Lifecycle
+│   │   │   ├── ngOnDestroy(): void
+├── Modules & Architecture
+│   ├── Standalone Mode (JD: Default in v19)
+│   │   ├── bootstrapApplication(appComponent: Type<any>, appConfig?: ApplicationConfig): Promise<ApplicationRef>
+│   │   ├── ApplicationConfig
+│   │   │   ├── providers: Provider[]
+│   │   │   ├── provideRouter(routes: Routes)
+│   │   │   ├── provideHttpClient(features?: HttpClientFeatures[])
+│   │   │   ├── provideAnimations()
+│   │   │   ├── provideAnimationsAsync()
+│   │   │   ├── provideZoneChangeDetection(options?: { eventCoalescing?: boolean, runCoalescing?: boolean })
+│   │   │   ├── provideClientHydration(options?: HydrationOptions)
+│   │   │   ├── provideExperimentalZonelessChangeDetection()
+│   │   │   └── provideServiceWorker(url: string, options?: SwRegistrationOptions)
+│   │   ├── Standalone Components/Directives/Pipes
+│   │   ├── Imports
+│   │   │   ├── imports: [CommonModule, ReactiveFormsModule, etc.]
+│   │   ├── Benefits
+│   │   │   ├── Simplified architecture
+│   │   │   ├── Smaller bundle size
+│   │   │   ├── Better tree-shaking
+│   │   │   └── No NgModule dependency
+│   ├── Lazy Loading (JD: Performance)
+│   │   ├── Route-Based Lazy Loading
+│   │   │   ├── loadComponent: () => Promise<Type<any> | { default: Type<any> }>
+│   │   │   ├── loadChildren: () => Promise<Type<any> | { default: Type<any> }>
+│   │   │   ├── Route Config
+│   │   │   │   ├── path: string
+│   │   │   │   ├── loadComponent/loadChildren
+│   │   │   │   ├── data: { [key: string]: any }
+│   │   │   │   ├── resolve: { [key: string]: Type<Resolve<any>> }
+│   │   │   │   └── canLoad: Type<CanLoad>[]
+│   │   ├── Preloading Strategies
+│   │   │   ├── PreloadAllModules
+│   │   │   ├── NoPreloading
+│   │   │   ├── Custom Preloading
+│   │   │   │   ├── PreloadingStrategy
+│   │   │   │   │   ├── preload(route: Route, load: () => Promise<any>): Observable<any>
+│   │   ├── Benefits
+│   │   │   ├── Reduced initial bundle size
+│   │   │   ├── Faster app load
+│   │   │   └── Scalability
+│   ├── Routing
+│   │   ├── RouterModule
+│   │   │   ├── forRoot(routes: Routes, config?: ExtraOptions): ModuleWithProviders<RouterModule>
+│   │   │   ├── forChild(routes: Routes): ModuleWithProviders<RouterModule>
+│   │   │   ├── Route Config
+│   │   │   │   ├── path: string
+│   │   │   │   ├── pathMatch: 'full' | 'prefix'
+│   │   │   │   ├── component: Type<any>
+│   │   │   │   ├── redirectTo: string
+│   │   │   │   ├── outlet: string
+│   │   │   │   ├── children: Routes
+│   │   │   │   ├── data: { [key: string]: any }
+│   │   │   │   ├── resolve: { [key: string]: Type<Resolve<any>> }
+│   │   │   │   ├── canActivate: Type<CanActivate>[] | CanActivateFn[]
+│   │   │   │   ├── canActivateChild: Type<CanActivateChild>[] | CanActivateChildFn[]
+│   │   │   │   ├── canDeactivate: Type<CanDeactivate<any>>[] | CanDeactivateFn[]
+│   │   │   │   ├── canMatch: Type<CanMatch>[] | CanMatchFn[]
+│   │   │   │   ├── canLoad: Type<CanLoad>[] | CanLoadFn[]
+│   │   │   │   └── loadComponent/loadChildren
+│   │   │   ├── Router
+│   │   │   │   ├── navigate(commands: any[], extras?: NavigationExtras): Promise<boolean>
+│   │   │   │   ├── navigateByUrl(url: string | UrlSegment[], extras?: NavigationExtras): Promise<boolean>
+│   │   │   │   ├── createUrlTree(commands: any[], extras?: NavigationExtras): UrlTree
+│   │   │   │   ├── parseUrl(url: string): UrlTree
+│   │   │   │   ├── serializeUrl(url: UrlTree): string
+│   │   │   │   ├── isActive(url: string | UrlTree, exact: boolean): boolean
+│   │   │   │   ├── events: Observable<Event>
+│   │   │   │   └── url: string
+│   │   │   ├── Router Events
+│   │   │   │   ├── NavigationStart
+│   │   │   │   ├── NavigationEnd
+│   │   │   │   ├── NavigationCancel
+│   │   │   │   ├── NavigationError
+│   │   │   │   ├── RoutesRecognized
+│   │   │   │   ├── GuardsCheckStart
+│   │   │   │   ├── GuardsCheckEnd
+│   │   │   │   ├── ResolveStart
+│   │   │   │   ├── ResolveEnd
+│   │   │   │   ├── ChildActivationStart
+│   │   │   │   ├── ChildActivationEnd
+│   │   │   │   ├── ActivationStart
+│   │   │   │   ├── ActivationEnd
+│   │   │   │   └── Scroll
+│   │   │   ├── ActivatedRoute
+│   │   │   │   ├── snapshot: ActivatedRouteSnapshot
+│   │   │   │   ├── url: Observable<UrlSegment[]>
+│   │   │   │   ├── params: Observable<Params>
+│   │   │   │   ├── queryParams: Observable<Params>
+│   │   │   │   ├── fragment: Observable<string | null>
+│   │   │   │   ├── data: Observable<Data>
+│   │   │   │   ├── paramMap: Observable<ParamMap>
+│   │   │   │   ├── queryParamMap: Observable<ParamMap>
+│   │   │   │   ├── component: Type<any> | null
+│   │   │   │   ├── parent: ActivatedRoute | null
+│   │   │   │   ├── children: ActivatedRoute[]
+│   │   │   ├── RouterOutlet
+│   │   │   │   ├── activateWith(activatedRoute: ActivatedRoute, resolver: ComponentFactoryResolver | null): void
+│   │   │   │   ├── deactivate(): void
+│   │   │   │   ├── isActivated: boolean
+│   │   │   │   ├── component: object
+│   │   │   │   ├── activatedRoute: ActivatedRoute
+│   │   │   ├── Route Guards
+│   │   │   │   ├── CanActivate: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+│   │   │   │   ├── CanActivateChild: (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+│   │   │   │   ├── CanDeactivate: (component: T, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot, nextState?: RouterStateSnapshot) => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+│   │   │   │   ├── CanMatch: (route: Route, segments: UrlSegment[]) => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+│   │   │   │   ├── CanLoad: (route: Route, segments: UrlSegment[]) => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+│   │   │   │   ├── Resolve: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => Observable<T> | Promise<T> | T
+│   │   │   ├── Router Directives
+│   │   │   │   ├── routerLink: string | any[]
+│   │   │   │   ├── [routerLinkActive]: string | string[]
+│   │   │   │   ├── [routerLinkActiveOptions]: { exact: boolean }
+│   │   │   │   ├── [queryParams]: { [key: string]: any }
+│   │   │   │   ├── [fragment]: string
+│   │   │   │   ├── [queryParamsHandling]: 'merge' | 'preserve' | ''
+│   │   │   │   ├── [skipLocationChange]: boolean
+│   │   │   │   ├── [replaceUrl]: boolean
+│   │   │   │   └── [state]: { [key: string]: any }
+├── Forms
+│   ├── Template-Driven Forms
+│   │   ├── Directives
+│   │   │   ├── NgModel
+│   │   │   ├── NgForm
+│   │   │   ├── NgModelGroup
+│   │   │   ├── RequiredValidator
+│   │   │   ├── MinLengthValidator
+│   │   │   ├── MaxLengthValidator
+│   │   │   ├── PatternValidator
+│   │   │   ├── EmailValidator
+│   │   │   └── Validators.compose([])
+│   │   ├── Form Status
+│   │   │   ├── valid
+│   │   │   ├── invalid
+│   │   │   ├── pristine
+│   │   │   ├── dirty
+│   │   │   ├── touched
+│   │   │   ├── untouched
+│   │   │   ├── submitted
+│   │   │   └── pending
+│   │   ├── Two-Way Binding
+│   │   │   ├── [(ngModel)]: any
+│   │   ├── Form Submission
+│   │   │   ├── (ngSubmit): EventEmitter
+│   │   ├── Custom Validators
+│   │   │   ├── ValidatorFn: (control: AbstractControl) => { [key: string]: any } | null
+│   │   ├── NgForm Methods
+│   │   │   ├── reset(): void
+│   │   │   ├── resetForm(value?: any): void
+│   │   │   ├── addControl(control: FormControl): void
+│   │   │   ├── removeControl(control: string): void
+│   │   │   ├── getControl(name: string): FormControl
+│   │   │   ├── setValue(value: any): void
+│   │   │   ├── patchValue(value: any): void
+│   │   │   └── submit(): void
+│   ├── Reactive Forms (JD: Complex forms)
+│   │   ├── Classes
+│   │   │   ├── FormControl
+│   │   │   │   ├── constructor(value: any, validators?: ValidatorFn | ValidatorFn[], asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[])
+│   │   │   │   ├── setValue(value: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── patchValue(value: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── reset(value?: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── markAsTouched(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsUntouched(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsDirty(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsPristine(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── setValidators(validators: ValidatorFn | ValidatorFn[]): void
+│   │   │   │   ├── setAsyncValidators(validators: AsyncValidatorFn | AsyncValidatorFn[]): void
+│   │   │   │   ├── clearValidators(): void
+│   │   │   │   ├── clearAsyncValidators(): void
+│   │   │   │   ├── disable(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── enable(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── status: 'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'
+│   │   │   │   ├── value: any
+│   │   │   │   ├── errors: { [key: string]: any } | null
+│   │   │   │   ├── valid: boolean
+│   │   │   │   ├── invalid: boolean
+│   │   │   │   ├── dirty: boolean
+│   │   │   │   ├── pristine: boolean
+│   │   │   │   ├── touched: boolean
+│   │   │   │   ├── untouched: boolean
+│   │   │   │   ├── enabled: boolean
+│   │   │   │   ├── disabled: boolean
+│   │   │   │   ├── statusChanges: Observable<'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'>
+│   │   │   │   ├── valueChanges: Observable<any>
+│   │   │   │   ├── get(path: string | (string | number)[]): AbstractControl | null
+│   │   │   │   ├── getError(errorCode: string, path?: string | (string | number)[]): any
+│   │   │   │   ├── hasError(errorCode: string, path?: string | (string | number)[]): boolean
+│   │   │   │   ├── setErrors(errors: { [key: string]: any } | null, options?: { emitEvent?: boolean }): void
+│   │   │   │   └── updateValueAndValidity(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   ├── FormGroup
+│   │   │   │   ├── constructor(controls: { [key: string]: AbstractControl }, validators?: ValidatorFn | ValidatorFn[], asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[])
+│   │   │   │   ├── addControl(name: string, control: AbstractControl): void
+│   │   │   │   ├── removeControl(name: string): void
+│   │   │   │   ├── get(path: string | (string | number)[]): AbstractControl | null
+│   │   │   │   ├── setValue(value: { [key: string]: any }, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── patchValue(value: { [key: string]: any }, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── reset(value?: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── controls: { [key: string]: AbstractControl }
+│   │   │   │   ├── markAsTouched(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsUntouched(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsDirty(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsPristine(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── setValidators(validators: ValidatorFn | ValidatorFn[]): void
+│   │   │   │   ├── setAsyncValidators(validators: AsyncValidatorFn | AsyncValidatorFn[]): void
+│   │   │   │   ├── clearValidators(): void
+│   │   │   │   ├── clearAsyncValidators(): void
+│   │   │   │   ├── disable(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── enable(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── status: 'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'
+│   │   │   │   ├── value: { [key: string]: any }
+│   │   │   │   ├── errors: { [key: string]: any } | null
+│   │   │   │   ├── valid: boolean
+│   │   │   │   ├── invalid: boolean
+│   │   │   │   ├── dirty: boolean
+│   │   │   │   ├── pristine: boolean
+│   │   │   │   ├── touched: boolean
+│   │   │   │   ├── untouched: boolean
+│   │   │   │   ├── enabled: boolean
+│   │   │   │   ├── disabled: boolean
+│   │   │   │   ├── statusChanges: Observable<'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'>
+│   │   │   │   ├── valueChanges: Observable<any>
+│   │   │   │   ├── getError(errorCode: string, path?: string | (string | number)[]): any
+│   │   │   │   ├── hasError(errorCode: string, path?: string | (string | number)[]): boolean
+│   │   │   │   ├── setErrors(errors: { [key: string]: any } | null, options?: { emitEvent?: boolean }): void
+│   │   │   │   └── updateValueAndValidity(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   ├── FormArray
+│   │   │   │   ├── constructor(controls: AbstractControl[], validators?: ValidatorFn | ValidatorFn[], asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[])
+│   │   │   │   ├── push(control: AbstractControl): void
+│   │   │   │   ├── insert(index: number, control: AbstractControl): void
+│   │   │   │   ├── removeAt(index: number): void
+│   │   │   │   ├── setControl(index: number, control: AbstractControl): void
+│   │   │   │   ├── at(index: number): AbstractControl
+│   │   │   │   ├── length: number
+│   │   │   │   ├── setValue(value: any[], options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── patchValue(value: any[], options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── reset(value?: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── controls: AbstractControl[]
+│   │   │   │   ├── markAsTouched(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsUntouched(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsDirty(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── markAsPristine(options?: { onlySelf?: boolean }): void
+│   │   │   │   ├── setValidators(validators: ValidatorFn | ValidatorFn[]): void
+│   │   │   │   ├── setAsyncValidators(validators: AsyncValidatorFn | AsyncValidatorFn[]): void
+│   │   │   │   ├── clearValidators(): void
+│   │   │   │   ├── clearAsyncValidators(): void
+│   │   │   │   ├── disable(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── enable(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   │   │   ├── status: 'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'
+│   │   │   │   ├── value: any[]
+│   │   │   │   ├── errors: { [key: string]: any } | null
+│   │   │   │   ├── valid: boolean
+│   │   │   │   ├── invalid: boolean
+│   │   │   │   ├── dirty: boolean
+│   │   │   │   ├── pristine: boolean
+│   │   │   │   ├── touched: boolean
+│   │   │   │   ├── untouched: boolean
+│   │   │   │   ├── enabled: boolean
+│   │   │   │   ├── disabled: boolean
+│   │   │   │   ├── statusChanges: Observable<'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'>
+│   │   │   │   ├── valueChanges: Observable<any>
+│   │   │   │   ├── getError(errorCode: string, path?: string | (string | number)[]): any
+│   │   │   │   ├── hasError(errorCode: string, path?: string | (string | number)[]): boolean
+│   │   │   │   ├── setErrors(errors: { [key: string]: any } | null, options?: { emitEvent?: boolean }): void
+│   │   │   │   └── updateValueAndValidity(options?: { onlySelf?: boolean, emitEvent?: boolean }): void
+│   │   ├── Directives
+│   │   │   ├── formControl: FormControl
+│   │   │   ├── formControlName: string
+│   │   │   ├── formGroup: FormGroup
+│   │   │   ├── formGroupName: string
+│   │   │   ├── formArrayName: string
+│   │   │   ├── ngModel (with ReactiveFormsModule)
+│   │   │   ├── RequiredValidator
+│   │   │   ├── MinLengthValidator
+│   │   │   ├── MaxLengthValidator
+│   │   │   ├── PatternValidator
+│   │   │   ├── EmailValidator
+│   │   │   └── Validators.compose([])
+│   │   ├── Validators
+│   │   │   ├── Built-in Validators
+│   │   │   │   ├── Validators.required
+│   │   │   │   ├── Validators.requiredTrue
+│   │   │   │   ├── Validators.min(min: number)
+│   │   │   │   ├── Validators.max(max: number)
+│   │   │   │   ├── Validators.minLength(minLength: number)
+│   │   │   │   ├── Validators.maxLength(maxLength: number)
+│   │   │   │   ├── Validators.pattern(pattern: string | RegExp)
+│   │   │   │   ├── Validators.email
+│   │   │   │   ├── Validators.nullValidator
+│   │   │   │   └── Validators.compose(validators: ValidatorFn[]): ValidatorFn | null
+│   │   │   ├── Custom Validators
+│   │   │   │   ├── ValidatorFn: (control: AbstractControl) => { [key: string]: any } | null
+│   │   │   │   ├── AsyncValidatorFn: (control: AbstractControl) => Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null>
+│   │   │   │   ├── Validators.composeAsync(asyncValidators: AsyncValidatorFn[]): AsyncValidatorFn | null
+│   │   ├── FormBuilder
+│   │   │   ├── group(controlsConfig: { [key: string]: any }, options?: { validators?: ValidatorFn | ValidatorFn[], asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[] }): FormGroup
+│   │   │   ├── control(value: any, validators?: ValidatorFn | ValidatorFn[], asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[]): FormControl
+│   │   │   ├── array(controls: any[], validators?: ValidatorFn | ValidatorFn[], asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[]): FormArray
+│   │   ├── Form Status
+│   │   │   ├── valid
+│   │   │   ├── invalid
+│   │   │   ├── pristine
+│   │   │   ├── dirty
+│   │   │   ├── touched
+│   │   │   ├── untouched
+│   │   │   ├── submitted
+│   │   │   └── pending
+│   │   ├── Form Submission
+│   │   │   ├── (ngSubmit): EventEmitter
+│   │   ├── Dynamic Forms
+│   │   │   ├── FormArray for dynamic controls
+│   │   │   ├── FormGroup for nested forms
+│   │   │   ├── addControl/removeControl
+│   │   │   ├── setControl
+│   │   │   └── patchValue for partial updates
+├── HTTP Client (JD: API integration)
+│   ├── HttpClientModule
+│   │   ├── provideHttpClient(features?: HttpClientFeatures[])
+│   │   │   ├── withFetch()
+│   │   │   ├── withInterceptors(interceptors: HttpInterceptorFn[])
+│   │   │   ├── withJsonpSupport()
+│   │   │   ├── withNoXsrfProtection()
+│   │   │   ├── withXsrfConfiguration(config: XsrfConfiguration)
+│   │   ├── HttpClient
+│   │   │   ├── get<T>(url: string, options?: HttpOptions): Observable<T>
+│   │   │   ├── post<T>(url: string, body: any, options?: HttpOptions): Observable<T>
+│   │   │   ├── put<T>(url: string, body: any, options?: HttpOptions): Observable<T>
+│   │   │   ├── delete<T>(url: string, options?: HttpOptions): Observable<T>
+│   │   │   ├── patch<T>(url: string, body: any, options?: HttpOptions): Observable<T>
+│   │   │   ├── head<T>(url: string, options?: HttpOptions): Observable<T>
+│   │   │   ├── options<T>(url: string, options?: HttpOptions): Observable<T>
+│   │   │   ├── request<T>(method: string, url: string, options?: HttpOptions): Observable<T>
+│   │   │   ├── jsonp<T>(url: string, callbackParam: string): Observable<T>
+│   │   │   ├── HttpOptions
+│   │   │   │   ├── headers?: HttpHeaders | { [header: string]: string | string[] }
+│   │   │   │   ├── params?: HttpParams | { [param: string]: string | number | boolean | (string | number | boolean)[] }
+│   │   │   │   ├── responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'
+│   │   │   │   ├── reportProgress?: boolean
+│   │   │   │   ├── withCredentials?: boolean
+│   │   │   │   ├── observe?: 'body' | 'events' | 'response'
+│   │   │   │   └── context?: HttpContext
+│   │   ├── HttpHeaders
+│   │   │   ├── constructor(headers?: { [name: string]: string | string[] })
+│   │   │   ├── set(name: string, value: string | string[]): HttpHeaders
+│   │   │   ├── append(name: string, value: string | string[]): HttpHeaders
+│   │   │   ├── delete(name: string): HttpHeaders
+│   │   │   ├── get(name: string): string | null
+│   │   │   ├── has(name: string): boolean
+│   │   │   ├── keys(): string[]
+│   │   │   ├── getAll(name: string): string[] | null
+│   │   │   └── toJSON(): { [name: string]: string[] }
+│   │   ├── HttpParams
+│   │   │   ├── constructor(params?: { [param: string]: string | number | boolean | (string | number | boolean)[] })
+│   │   │   ├── set(param: string, value: string | number | boolean | (string | number | boolean)[]): HttpParams
+│   │   │   ├── append(param: string, value: string | number | boolean | (string | number | boolean)[]): HttpParams
+│   │   │   ├── appendAll(params: { [param: string]: string | number | boolean | (string | number | boolean)[] }): HttpParams
+│   │   │   ├── delete(param: string, value?: string | number | boolean | (string | number | boolean)[]): HttpParams
+│   │   │   ├── get(param: string): string | null
+│   │   │   ├── getAll(param: string): string[] | null
+│   │   │   ├── has(param: string): boolean
+│   │   │   ├── keys(): string[]
+│   │   │   ├── toString(): string
+│   │   │   └── toJSON(): { [param: string]: string | string[] }
+│   │   ├── HttpContext
+│   │   │   ├── constructor()
+│   │   │   ├── set(token: HttpContextToken<T>, value: T): HttpContext
+│   │   │   ├── get(token: HttpContextToken<T>): T
+│   │   │   ├── delete(token: HttpContextToken<T>): HttpContext
+│   │   │   ├── has(token: HttpContextToken<T>): boolean
+│   │   │   ├── keys(): HttpContextToken<unknown>[]
+│   │   │   └── HttpContextToken<T>(defaultValue: () => T): HttpContextToken<T>
+│   │   ├── HttpInterceptor
+│   │   │   ├── HttpInterceptorFn: (req: HttpRequest<any>, next: HttpHandlerFn) => Observable<HttpEvent<any>>
+│   │   │   ├── intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>
+│   │   │   ├── Chaining Interceptors
+│   │   │   │   ├── provideHttpClient(withInterceptors([interceptor1, interceptor2]))
+│   │   │   ├── Common Use Cases
+│   │   │   │   ├── Authentication (e.g., adding JWT token)
+│   │   │   │   ├── Logging
+│   │   │   │   ├── Caching
+│   │   │   │   ├── Error Handling
+│   │   │   │   └── Retry Logic
+│   │   ├── HttpHandler
+│   │   │   ├── handle(req: HttpRequest<any>): Observable<HttpEvent<any>>
+│   │   ├── Http Events
+│   │   │   ├── HttpResponse<T>
+│   │   │   │   ├── constructor(init: { body?: T | null, headers?: HttpHeaders, status?: number, statusText?: string, url?: string })
+│   │   │   │   ├── body: T | null
+│   │   │   │   ├── headers: HttpHeaders
+│   │   │   │   ├── status: number
+│   │   │   │   ├── statusText: string
+│   │   │   │   ├── url: string | null
+│   │   │   │   ├── ok: boolean
+│   │   │   │   ├── type: HttpEventType.Response
+│   │   │   │   ├── clone(update?: { body?: T | null, headers?: HttpHeaders, status?: number, statusText?: string, url?: string }): HttpResponse<T>
+│   │   │   │   └── toJSON(): { body: T | null, headers: { [key: string]: string[] }, status: number, statusText: string, url: string | null }
+│   │   │   ├── HttpErrorResponse
+│   │   │   │   ├── constructor(init: { error?: any, headers?: HttpHeaders, status?: number, statusText?: string, url?: string })
+│   │   │   │   ├── error: any
+│   │   │   │   ├── headers: HttpHeaders
+│   │   │   │   ├── status: number
+│   │   │   │   ├── statusText: string
+│   │   │   │   ├── url: string | null
+│   │   │   │   ├── ok: boolean
+│   │   │   │   ├── name: 'HttpErrorResponse'
+│   │   │   │   ├── message: string
+│   │   │   │   ├── type: HttpEventType.Response
+│   │   │   │   └── toJSON(): { error: any, headers: { [key: string]: string[] }, status: number, statusText: string, url: string | null }
+│   │   │   ├── HttpHeaderResponse
+│   │   │   │   ├── constructor(init: { headers?: HttpHeaders, status?: number, statusText?: string, url?: string })
+│   │   │   │   ├── headers: HttpHeaders
+│   │   │   │   ├── status: number
+│   │   │   │   ├── statusText: string
+│   │   │   │   ├── url: string | null
+│   │   │   │   ├── ok: boolean
+│   │   │   │   ├── type: HttpEventType.ResponseHeader
+│   │   │   │   ├── clone(update?: { headers?: HttpHeaders, status?: number, statusText?: string, url?: string }): HttpHeaderResponse
+│   │   │   │   └── toJSON(): { headers: { [key: string]: string[] }, status: number, statusText: string, url: string | null }
+│   │   │   ├── HttpSentEvent
+│   │   │   │   ├── type: HttpEventType.Sent
+│   │   │   ├── HttpDownloadProgressEvent
+│   │   │   │   ├── type: HttpEventType.DownloadProgress
+│   │   │   │   ├── loaded: number
+│   │   │   │   ├── total?: number
+│   │   │   │   ├── partialText?: string
+│   │   │   ├── HttpUploadProgressEvent
+│   │   │   │   ├── type: HttpEventType.UploadProgress
+│   │   │   │   ├── loaded: number
+│   │   │   │   ├── total?: number
+│   │   │   ├── HttpUserEvent<T>
+│   │   │   │   ├── type: HttpEventType.User
+│   │   │   │   ├── value: T
+│   │   ├── Error Handling
+│   │   │   ├── catchError operator (RxJS)
+│   │   │   ├── retry operator (RxJS)
+│   │   │   ├── HttpInterceptor for centralized error handling
+│   │   │   ├── HttpErrorResponse handling
+│   │   │   └── Global error handler service
+│   │   ├── Progress Events
+│   │   │   ├── reportProgress: true
+│   │   │   ├── observe: 'events'
+│   │   │   ├── HttpEventType
+│   │   │   │   ├── Sent
+│   │   │   │   ├── UploadProgress
+│   │   │   │   ├── ResponseHeader
+│   │   │   │   ├── DownloadProgress
+│   │   │   │   ├── Response
+│   │   │   │   ├── User
+│   │   ├── JSONP Support
+│   │   │   ├── jsonp<T>(url: string, callbackParam: string): Observable<T>
+│   │   │   ├── withJsonpSupport()
+│   │   ├── XSRF Protection
+│   │   │   ├── withXsrfConfiguration({ cookieName?: string, headerName?: string })
+│   │   │   ├── withNoXsrfProtection()
+│   │   │   ├── HttpClientXsrfModule
+│   │   │   ├── XSRF-TOKEN cookie
+│   │   │   ├── X-XSRF-TOKEN header
+├── RxJS Integration (JD: Reactive programming)
+│   ├── Core Concepts
+│   │   ├── Observable
+│   │   │   ├── constructor(subscribe: (subscriber: Subscriber<T>) => TeardownLogic)
+│   │   │   ├── subscribe(observer?: Partial<Observer<T>>): Subscription
+│   │   │   ├── pipe(...operators: OperatorFunction<any, any>[]): Observable<any>
+│   │   │   ├── toPromise(): Promise<T | undefined>
+│   │   │   ├── forEach(next: (value: T) => void): Promise<void>
+│   │   │   ├── lift(operator: Operator<T, R>): Observable<R>
+│   │   │   └── [Symbol.observable](): Observable<T>
+│   │   ├── Observer
+│   │   │   ├── next: (value: T) => void
+│   │   │   ├── error: (err: any) => void
+│   │   │   ├── complete: () => void
+│   │   ├── Subscription
+│   │   │   ├── constructor()
+│   │   │   ├── unsubscribe(): void
+│   │   │   ├── add(teardown: TeardownLogic): void
+│   │   │   ├── remove(sub: Subscription): void
+│   │   │   ├── closed: boolean
+│   │   ├── Subject
+│   │   │   ├── constructor()
+│   │   │   ├── next(value?: T): void
+│   │   │   ├── error(err: any): void
+│   │   │   ├── complete(): void
+│   │   │   ├── asObservable(): Observable<T>
+│   │   │   ├── subscribe(observer?: Partial<Observer<T>>): Subscription
+│   │   │   ├── unsubscribe(): void
+│   │   │   ├── observers: Observer<T>[]
+│   │   │   ├── closed: boolean
+│   │   │   ├── isStopped: boolean
+│   │   │   ├── hasError: boolean
+│   │   │   ├── thrownError: any
+│   │   ├── BehaviorSubject
+│   │   │   ├── constructor(value: T)
+│   │   │   ├── getValue(): T
+│   │   │   ├── value: T
+│   │   │   ├── next(value: T): void
+│   │   │   ├── asObservable(): Observable<T>
+│   │   ├── ReplaySubject
+│   │   │   ├── constructor(bufferSize?: number, windowTime?: number)
+│   │   │   ├── next(value: T): void
+│   │   │   ├── asObservable(): Observable<T>
+│   │   ├── AsyncSubject
+│   │   │   ├── constructor()
+│   │   │   ├── next(value: T): void
+│   │   │   ├── complete(): void
+│   │   │   ├── asObservable(): Observable<T>
+│   │   ├── Operators
+│   │   │   ├── Creation Operators
+│   │   │   │   ├── of(...args: T[]): Observable<T>
+│   │   │   │   ├── from(input: ObservableInput<T>): Observable<T>
+│   │   │   │   ├── fromEvent(target: EventTarget, eventName: string): Observable<Event>
+│   │   │   │   ├── interval(period: number): Observable<number>
+│   │   │   │   ├── timer(dueTime: number | Date, period?: number): Observable<number>
+│   │   │   │   ├── throwError(error: any): Observable<never>
+│   │   │   │   ├── defer(factory: () => ObservableInput<T>): Observable<T>
+│   │   │   │   ├── range(start: number, count: number): Observable<number>
+│   │   │   │   ├── generate(initialStateOrOptions: GenerateOptions<T, S>): Observable<T>
+│   │   │   │   ├── iif(condition: () => boolean, trueResult: ObservableInput<T>, falseResult: ObservableInput<T>): Observable<T>
+│   │   │   │   ├── NEVER: Observable<never>
+│   │   │   │   ├── EMPTY: Observable<never>
+│   │   │   │   └── combineLatest(...observables: ObservableInput<any>[]): Observable<any[]>
+│   │   │   ├── Transformation Operators
+│   │   │   │   ├── map(project: (value: T, index: number) => R): Observable<R>
+│   │   │   │   ├── mapTo(value: R): Observable<R>
+│   │   │   │   ├── switchMap(project: (value: T, index: number) => ObservableInput<R>): Observable<R>
+│   │   │   │   ├── mergeMap(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): Observable<R>
+│   │   │   │   ├── concatMap(project: (value: T, index: number) => ObservableInput<R>): Observable<R>
+│   │   │   │   ├── exhaustMap(project: (value: T, index: number) => ObservableInput<R>): Observable<R>
+│   │   │   │   ├── scan(accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>
+│   │   │   │   ├── reduce(accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>
+│   │   │   │   ├── buffer(bufferEvents: Observable<any>): Observable<T[]>
+│   │   │   │   ├── bufferCount(bufferSize: number, startBufferEvery?: number): Observable<T[]>
+│   │   │   │   ├── bufferTime(bufferTimeSpan: number, bufferCreationInterval?: number, maxBufferSize?: number): Observable<T[]>
+│   │   │   │   ├── bufferToggle(openings: Observable<any>, closingSelector: (value: any) => Observable<any>): Observable<T[]>
+│   │   │   │   ├── bufferWhen(closingSelector: () => Observable<any>): Observable<T[]>
+│   │   │   │   ├── groupBy(keySelector: (value: T) => K): Observable<GroupedObservable<K, T>>
+│   │   │   │   ├── pairwise(): Observable<[T, T]>
+│   │   │   │   ├── toArray(): Observable<T[]>
+│   │   │   │   ├── window(windowBoundaries: Observable<any>): Observable<Observable<T>>
+│   │   │   │   ├── windowCount(windowSize: number, startWindowEvery?: number): Observable<Observable<T>>
+│   │   │   │   ├── windowTime(windowTimeSpan: number, windowCreationInterval?: number, maxWindowSize?: number): Observable<Observable<T>>
+│   │   │   │   ├── windowToggle(openings: Observable<any>, closingSelector: (openValue: any) => Observable<any>): Observable<Observable<T>>
+│   │   │   │   ├── windowWhen(closingSelector: () => Observable<any>): Observable<Observable<T>>
+│   │   │   ├── Filtering Operators
+│   │   │   │   ├── filter(predicate: (value: T, index: number) => boolean): Observable<T>
+│   │   │   │   ├── distinct(keySelector?: (value: T) => any, flushes?: Observable<any>): Observable<T>
+│   │   │   │   ├── distinctUntilChanged(compare?: (x: T, y: T) => boolean): Observable<T>
+│   │   │   │   ├── distinctUntilKeyChanged(key: keyof T, compare?: (x: any, y: any) => boolean): Observable<T>
+│   │   │   │   ├── take(count: number): Observable<T>
+│   │   │   │   ├── takeLast(count: number): Observable<T>
+│   │   │   │   ├── takeUntil(notifier: Observable<any>): Observable<T>
+│   │   │   │   ├── takeWhile(predicate: (value: T, index: number) => boolean, inclusive?: boolean): Observable<T>
+│   │   │   │   ├── skip(count: number): Observable<T>
+│   │   │   │   ├── skipLast(count: number): Observable<T>
+│   │   │   │   ├── skipUntil(notifier: Observable<any>): Observable<T>
+│   │   │   │   ├── skipWhile(predicate: (value: T, index: number) => boolean): Observable<T>
+│   │   │   │   ├── first(predicate?: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: T): Observable<T>
+│   │   │   │   ├── last(predicate?: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: T): Observable<T>
+│   │   │   │   ├── elementAt(index: number, defaultValue?: T): Observable<T>
+│   │   │   │   ├── find(predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<T | undefined>
+│   │   │   │   ├── findIndex(predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<number>
+│   │   │   │   ├── ignoreElements(): Observable<never>
+│   │   │   │   ├── single(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T | undefined>
+│   │   │   ├── Combination Operators
+│   │   │   │   ├── combineLatest(...observables: ObservableInput<any>[]): Observable<any[]>
+│   │   │   │   ├── combineLatestWith(...observables: ObservableInput<any>[]): Observable<any[]>
+│   │   │   │   ├── concat(...observables: ObservableInput<T>[]): Observable<T>
+│   │   │   │   ├── concatAll(): Observable<T>
+│   │   │   │   ├── concatMap(project: (value: T, index: number) => ObservableInput<R>): Observable<R>
+│   │   │   │   ├── concatMapTo(innerObservable: ObservableInput<R>): Observable<R>
+│   │   │   │   ├── merge(...observables: ObservableInput<T>[]): Observable<T>
+│   │   │   │   ├── mergeAll(concurrent?: number): Observable<T>
+│   │   │   │   ├── mergeMap(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): Observable<R>
+│   │   │   │   ├── mergeMapTo(innerObservable: ObservableInput<R>, concurrent?: number): Observable<R>
+│   │   │   │   ├── race(...observables: ObservableInput<T>[]): Observable<T>
+│   │   │   │   ├── raceWith(...observables: ObservableInput<any>[]): Observable<T | any>
+│   │   │   │   ├── startWith(...values: T[]): Observable<T>
+│   │   │   │   ├── withLatestFrom(...observables: ObservableInput<any>[]): Observable<any[]>
+│   │   │   │   ├── zip(...observables: ObservableInput<any>[]): Observable<any[]>
+│   │   │   │   ├── zipAll(project?: (...values: any[]) => R): Observable<R>
+│   │   │   │   ├── zipWith(...observables: ObservableInput<any>[]): Observable<any[]>
+│   │   │   ├── Utility Operators
+│   │   │   │   ├── tap(observer: Partial<Observer<T>> | ((value: T) => void)): Observable<T>
+│   │   │   │   ├── delay(due: number | Date): Observable<T>
+│   │   │   │   ├── delayWhen(delayDurationSelector: (value: T, index: number) => Observable<any>): Observable<T>
+│   │   │   │   ├── dematerialize<N extends ObservableNotification<any>>(): Observable<N['value']>
+│   │   │   │   ├── materialize(): Observable<Notification<T>>
+│   │   │   │   ├── timeInterval(scheduler?: SchedulerLike): Observable<TimeInterval<T>>
+│   │   │   │   ├── timestamp(scheduler?: SchedulerLike): Observable<Timestamp<T>>
+│   │   │   │   ├── timeout(due: number | Date, scheduler?: SchedulerLike): Observable<T>
+│   │   │   │   ├── timeoutWith(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): Observable<T | R>
+│   │   │   │   ├── toPromise(): Promise<T | undefined>
+│   │   │   │   ├── observeOn(scheduler: SchedulerLike, delay?: number): Observable<T>
+│   │   │   │   ├── subscribeOn(scheduler: SchedulerLike, delay?: number): Observable<T>
+│   │   │   │   ├── finalize(callback: () => void): Observable<T>
+│   │   │   │   ├── repeat(count?: number): Observable<T>
+│   │   │   │   ├── repeatWhen(notifier: (notifications: Observable<any>) => Observable<any>): Observable<T>
+│   │   │   │   ├── retry(count?: number): Observable<T>
+│   │   │   │   ├── retryWhen(notifier: (errors: Observable<any>) => Observable<any>): Observable<T>
+│   │   │   │   ├── share(): Observable<T>
+│   │   │   │   ├── shareReplay(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): Observable<T>
+│   │   │   │   ├── multicast(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>)): ConnectableObservable<T>
+│   │   │   │   ├── publish(): ConnectableObservable<T>
+│   │   │   │   ├── publishBehavior(value: T): ConnectableObservable<T>
+│   │   │   │   ├── publishLast(): ConnectableObservable<T>
+│   │   │   │   ├── publishReplay(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): ConnectableObservable<T>
+│   │   │   │   ├── connect(): Observable<T>
+│   │   │   │   ├── refCount(): Observable<T>
+│   │   │   ├── Error Handling Operators
+│   │   │   │   ├── catchError(selector: (err: any, caught: Observable<T>) => ObservableInput<T>): Observable<T>
+│   │   │   │   ├── retry(count?: number): Observable<T>
+│   │   │   │   ├── retryWhen(notifier: (errors: Observable<any>) => Observable<any>): Observable<T>
+│   │   │   │   ├── throwIfEmpty(errorFactory?: () => any): Observable<T>
+│   │   │   │   ├── onErrorResumeNext(...observables: ObservableInput<any>[]): Observable<T | any>
+│   │   │   ├── Conditional Operators
+│   │   │   │   ├── defaultIfEmpty(defaultValue: T): Observable<T>
+│   │   │   │   ├── every(predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<boolean>
+│   │   │   │   ├── iif(condition: () => boolean, trueResult: ObservableInput<T>, falseResult: ObservableInput<T>): Observable<T>
+│   │   │   │   ├── sequenceEqual(compareTo: Observable<T>, comparator?: (a: T, b: T) => boolean): Observable<boolean>
+│   │   │   ├── Mathematical Operators
+│   │   │   │   ├── count(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number>
+│   │   │   │   ├── max(comparator?: (a: T, b: T) => number): Observable<T>
+│   │   │   │   ├── min(comparator?: (a: T, b: T) => number): Observable<T>
+│   │   │   │   ├── reduce(accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>
+│   │   │   │   ├── scan(accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>
+│   │   ├── Schedulers
+│   │   │   ├── asapScheduler
+│   │   │   ├── asyncScheduler
+│   │   │   ├── queueScheduler
+│   │   │   ├── animationFrameScheduler
+│   │   │   ├── schedule<T>(work: (state?: T) => void, delay?: number, state?: T): Subscription
+│   │   │   ├── flush(): void
+│   │   ├── Angular Integration
+│   │   │   ├── AsyncPipe
+│   │   │   │   ├── transform(value: Observable<T> | Promise<T> | null | undefined): T | null
+│   │   │   │   ├── Automatic subscription/unsubscription
+│   │   │   ├── HttpClient
+│   │   │   │   ├── Returns Observables
+│   │   │   │   ├── Error handling with catchError
+│   │   │   │   ├── Retry with retry/retryWhen
+│   │   │   ├── Reactive Forms
+│   │   │   │   ├── valueChanges: Observable<any>
+│   │   │   │   ├── statusChanges: Observable<'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'>
+│   │   │   ├── Router
+│   │   │   │   ├── events: Observable<Event>
+│   │   │   │   ├── params: Observable<Params>
+│   │   │   │   ├── queryParams: Observable<Params>
+│   │   │   │   ├── data: Observable<Data>
+│   │   │   ├── Common Patterns
+│   │   │   │   ├── Debouncing: debounceTime(ms: number)
+│   │   │   │   ├── Throttling: throttleTime(ms: number)
+│   │   │   │   ├── Search: switchMap + debounceTime
+│   │   │   │   ├── Caching: shareReplay
+│   │   │   │   ├── Polling: interval + switchMap
+│   │   │   │   ├── Error Handling: catchError + retry
+│   │   │   │   ├── Combining Streams: combineLatest, merge, zip
+│   │   │   │   ├── State Management: BehaviorSubject + scan
+│   │   │   └── Best Practices
+│   │   │       ├── Unsubscribe using takeUntil
+│   │   │       ├── Avoid nested subscriptions
+│   │   │       ├── Use pipe for operator chaining
+│   │   │       ├── Use AsyncPipe to avoid manual subscriptions
+│   │   │       ├── Handle errors centrally
+│   │   │       ├── Use shareReplay for multicasting
+│   │   │       ├── Optimize with debounceTime/throttleTime
+│   │   │       ├── Use switchMap for cancelling outdated requests
+├── Animations
+│   ├── @angular/animations
+│   │   ├── BrowserAnimationsModule
+│   │   │   ├── provideAnimations()
+│   │   │   ├── provideAnimationsAsync()
+│   │   ├── NoopAnimationsModule
+│   │   ├── AnimationBuilder
+│   │   │   ├── build(animation: AnimationMetadata | AnimationMetadata[]): AnimationFactory
+│   │   ├── AnimationFactory
+│   │   │   ├── create(element: any, options?: AnimationOptions): AnimationPlayer
+│   │   ├── AnimationPlayer
+│   │   │   ├── play(): void
+│   │   │   ├── pause(): void
+│   │   │   ├── finish(): void
+│   │   │   ├── reset(): void
+│   │   │   ├── destroy(): void
+│   │   │   ├── init(): void
+│   │   │   ├── hasStarted(): boolean
+│   │   │   ├── isFinished(): boolean
+│   │   │   ├── getPosition(): number
+│   │   │   ├── setPosition(position: number): void
+│   │   │   ├── restart(): void
+│   │   │   ├── onDone(fn: () => void): void
+│   │   │   ├── onStart(fn: () => void): void
+│   │   │   ├── onDestroy(fn: () => void): void
+│   │   │   ├── beforeDestroy(fn: () => void): void
+│   │   │   ├── totalTime: number
+│   │   │   ├── parentPlayer: AnimationPlayer | null
+│   │   │   ├── disabled: boolean
+│   │   │   ├── currentSnapshot: { [key: string]: any }
+│   │   ├── Animation Metadata
+│   │   │   ├── animate(timing: string | number, styles?: AnimationStyleMetadata | AnimationKeyframesSequenceMetadata, options?: AnimationOptions): AnimationAnimateMetadata
+│   │   │   ├── style(styles: { [key: string]: string | number } | { [key: string]: string | number }[]): AnimationStyleMetadata
+│   │   │   ├── sequence(steps: AnimationMetadata[], options?: AnimationOptions): AnimationSequenceMetadata
+│   │   │   ├── group(steps: AnimationMetadata[], options?: AnimationOptions): AnimationGroupMetadata
+│   │   │   ├── keyframes(steps: AnimationStyleMetadata[]): AnimationKeyframesSequenceMetadata
+│   │   │   ├── transition(stateChangeExpr: string | ((fromState: string, toState: string, element?: any, params?: { [key: string]: any }) => boolean), steps: AnimationMetadata | AnimationMetadata[], options?: AnimationOptions): AnimationTransitionMetadata
+│   │   │   ├── trigger(name: string, definitions: AnimationMetadata[]): AnimationTriggerMetadata
+│   │   │   ├── state(name: string, styles: AnimationStyleMetadata, options?: { params?: { [key: string]: any } }): AnimationStateMetadata
+│   │   │   ├── query(selector: string, animation: AnimationMetadata | AnimationMetadata[], options?: AnimationQueryOptions): AnimationQueryMetadata
+│   │   │   ├── stagger(timings: string | number, animation: AnimationMetadata | AnimationMetadata[]): AnimationStaggerMetadata
+│   │   │   ├── animation(steps: AnimationMetadata | AnimationMetadata[], options?: AnimationOptions): AnimationReferenceMetadata
+│   │   │   ├── useAnimation(animation: AnimationReferenceMetadata, options?: AnimationOptions): AnimationAnimateRefMetadata
+│   │   │   ├── animateChild(options?: AnimationOptions): AnimationAnimateChildMetadata
+│   │   │   ├── disableAnimations(element: any): void
+│   │   │   ├── autoStyle(element: any, styles: { [key: string]: string | number }): { [key: string]: string | number }
+│   │   ├── Component Integration
+│   │   │   ├── @Component.animations
+│   │   │   │   ├── animations: AnimationTriggerMetadata[]
+│   │   │   ├── @Component.host
+│   │   │   │   ├── '[@triggerName]': 'expression'
+│   │   │   │   ├── '[@triggerName.start]': 'callback($event: AnimationEvent)'
+│   │   │   │   ├── '[@triggerName.done]': 'callback($event: AnimationEvent)'
+│   │   │   ├── Animation Triggers
+│   │   │   │   ├── trigger(name: string, definitions: AnimationMetadata[])
+│   │   │   │   ├── state(name: string, styles: AnimationStyleMetadata)
+│   │   │   │   ├── transition(stateChangeExpr: string, steps: AnimationMetadata[])
+│   │   │   ├── Animation Events
+│   │   │   │   ├── AnimationEvent
+│   │   │   │   │   ├── fromState: string
+│   │   │   │   │   ├── toState: string
+│   │   │   │   │   ├── totalTime: number
+│   │   │   │   │   ├── phaseName: string
+│   │   │   │   │   ├── element: any
+│   │   │   │   │   ├── triggerName: string
+│   │   │   │   │   ├── disabled: boolean
+│   │   │   ├── Animation Parameters
+│   │   │   │   ├── :param: 'value'
+│   │   │   │   ├── params: { [key: string]: any }
+│   │   │   ├── Built-in Triggers
+│   │   │   │   ├── :enter
+│   │   │   │   ├── :leave
+│   │   │   │   ├── :increment
+│   │   │   │   ├── :decrement
+│   │   │   │   ├── void => *
+│   │   │   │   ├── * => void
+│   │   │   ├── Query Animations
+│   │   │   │   ├── query(selector: string, animation: AnimationMetadata[])
+│   │   │   │   ├── AnimationQueryOptions
+│   │   │   │   │   ├── limit?: number
+│   │   │   │   │   ├── optional?: boolean
+│   │   │   │   ├── Stagger Animations
+│   │   │   │   │   ├── stagger(timings: string | number, animation: AnimationMetadata[])
+│   │   │   ├── Animation Lifecycle
+│   │   │   │   ├── @HostListener('[@triggerName.start]', ['$event'])
+│   │   │   │   ├── @HostListener('[@triggerName.done]', ['$event'])
+│   │   ├── Best Practices
+│   │   │   ├── Use trigger for reusable animations
+│   │   │   ├── Leverage :enter/:leave for route transitions
+│   │   │   ├── Use query for child animations
+│   │   │   ├── Optimize with stagger for lists
+│   │   │   ├── Avoid complex animations for performance
+│   │   │   ├── Test animations with NoopAnimationsModule
+│   │   │   ├── Use params for dynamic animations
+├── Internationalization (i18n) (JD: Translation)
+│   ├── @angular/localize
+│   │   ├── provideLocalize()
+│   │   ├── $localize
+│   │   │   ├── $localize`message:context`
+│   │   │   ├── $localize`:meaning|description@@id:message`
+│   │   │   ├── $localize`Hello ${name}:name:!`
+│   │   ├── initLocalize(options: { locale: string, translations?: { [key: string]: string } })
+│   │   ├── Transloco (Alternative)
+│   │   │   ├── TranslocoModule
+│   │   │   ├── provideTransloco(options: TranslocoConfig)
+│   │   │   ├── transloco pipe: {{ 'key' | transloco }}
+│   │   │   ├── TranslocoService
+│   │   │   │   ├── translate(key: string, params?: { [key: string]: any }, lang?: string): string
+│   │   │   │   ├── selectTranslate(key: string, params?: { [key: string]: any }, lang?: string): Observable<string>
+│   │   │   │   ├── translateObject(key: string, params?: { [key: string]: any }, lang?: string): any
+│   │   │   │   ├── selectTranslateObject(key: string, params?: { [key: string]: any }, lang?: string): Observable<any>
+│   │   │   │   ├── setActiveLang(lang: string): void
+│   │   │   │   ├── getActiveLang(): string
+│   │   │   │   ├── setTranslation(translation: Translation, lang?: string): void
+│   │   │   │   ├── setTranslationKey(key: string, value: string, lang?: string): void
+│   │   │   │   ├── load(lang: string): Observable<Translation>
+│   │   │   │   ├── unload(lang: string): void
+│   │   │   │   ├── getAvailableLangs(): string[]
+│   │   │   │   ├── getDefaultLang(): string
+│   │   │   │   ├── getTranslation(lang?: string): Translation
+│   │   │   │   ├── events: Observable<TranslocoEvents>
+│   │   │   ├── TranslocoConfig
+│   │   │   │   ├── availableLangs?: string[]
+│   │   │   │   ├── defaultLang: string
+│   │   │   │   ├── reRenderOnLangChange?: boolean
+│   │   │   │   ├── fallbackLang?: string | string[]
+│   │   │   │   ├── missingHandler?: TranslocoMissingHandler
+│   │   │   │   ├── interpolation?: [string, string]
+│   │   │   │   ├── prodMode?: boolean
+│   │   │   │   ├── scope?: string
+│   │   │   │   ├── preloadLangs?: string[]
+│   │   │   │   ├── loadTimeout?: number
+│   │   │   ├── Lazy Loading Translations
+│   │   │   │   ├── loadTranslation(lang: string)
+│   │   │   │   ├── TranslocoLoader
+│   │   │   │   │   ├── getTranslation(lang: string): Observable<Translation>
+│   │   │   ├── Directives
+│   │   │   │   ├── transloco: [transloco]="key"
+│   │   │   │   ├── translocoParams: [translocoParams]="params"
+│   │   │   │   ├── translocoScope: [translocoScope]="scope"
+│   │   │   ├── Pipes
+│   │   │   │   ├── transloco: key | transloco:params:lang
+│   │   │   │   ├── translocoDate: date | translocoDate:options:lang
+│   │   │   │   ├── translocoDecimal: number | translocoDecimal:options:lang
+│   │   │   │   ├── translocoPercent: number | translocoPercent:options:lang
+│   │   │   │   ├── translocoCurrency: number | translocoCurrency:options:lang
+│   │   │   ├── Scopes
+│   │   │   │   ├── provideTranslocoScope(scope: string | { scope: string, alias?: string })
+│   │   │   │   ├── Lazy-loaded scopes
+│   │   │   │   ├── Scope aliasing
+│   │   │   ├── Events
+│   │   │   │   ├── TranslationLoadSuccess
+│   │   │   │   ├── TranslationLoadError
+│   │   │   │   ├── LangChanged
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Lazy load translations
+│   │   │   │   ├── Use scopes for modularization
+│   │   │   │   ├── Cache translations
+│   │   │   │   ├── Handle missing keys
+│   │   │   │   ├── Optimize with prodMode
+│   │   │   │   ├── Use TranslocoService for programmatic translations
+│   ├── Angular i18n
+│   │   ├── i18n Attribute
+│   │   │   ├── i18n="@@id"
+│   │   │   ├── i18n="meaning|description@@id"
+│   │   │   ├── i18n-title="@@id"
+│   │   │   ├── i18n-placeholder="@@id"
+│   │   ├── Translation Files
+│   │   │   ├── XLIFF (.xlf)
+│   │   │   ├── XMB (.xmb)
+│   │   │   ├── JSON (.json) with Transloco
+│   │   ├── Extraction
+│   │   │   ├── ng extract-i18n
+│   │   │   ├── --format: xlf, xmb, json
+│   │   │   ├── --output-path
+│   │   │   ├── --locale
+│   │   ├── Compilation
+│   │   │   ├── ng build --localize
+│   │   │   ├── configurations in angular.json
+│   │   │   │   ├── i18nLocale: string
+│   │   │   │   ├── i18nFile: string
+│   │   │   │   ├── i18nFormat: string
+│   │   │   │   ├── outputPath: string
+│   │   ├── Runtime Translation
+│   │   │   ├── Transloco for dynamic translations
+│   │   │   ├── Lazy loading translation files
+│   │   │   ├── HttpClient to fetch translations
+│   │   ├── Pluralization
+│   │   │   ├── <ng-container i18n="@@id">{count, plural, =0 {none} =1 {one} other {# items}}</ng-container>
+│   │   │   ├── I18nPluralPipe
+│   │   ├── Select
+│   │   │   ├── <ng-container i18n="@@id">{gender, select, male {he} female {she} other {they}}</ng-container>
+│   │   │   ├── I18nSelectPipe
+│   │   ├── Date Formatting
+│   │   │   ├── DatePipe with locale
+│   │   │   ├── TranslocoDate pipe
+│   │   ├── Currency/Number Formatting
+│   │   │   ├── CurrencyPipe with locale
+│   │   │   ├── DecimalPipe with locale
+│   │   │   ├── PercentPipe with locale
+│   │   │   ├── TranslocoCurrency/Decimal/Percent pipes
+│   │   ├── Best Practices
+│   │   │   ├── Use unique IDs for translations
+│   │   │   ├── Lazy load translations for performance
+│   │   │   ├── Handle pluralization/select
+│   │   │   ├── Use Transloco for runtime translations
+│   │   │   ├── Test translations in dev mode
+│   │   │   ├── Automate extraction with CLI
+├── Server-Side Rendering (SSR) (JD: SSR)
+│   ├── @angular/platform-server
+│   │   ├── ServerModule
+│   │   ├── provideServerRendering()
+│   │   ├── renderModule(module: Type<any>, options: { document?: string, url?: string }): Promise<string>
+│   │   ├── platformServer(options?: PlatformOptions): PlatformRef
+│   │   ├── PlatformOptions
+│   │   │   ├── document?: string
+│   │   │   ├── url?: string
+│   │   │   ├── extraProviders?: StaticProvider[]
+│   │   ├── ServerTransferStateModule
+│   │   │   ├── TransferState
+│   │   │   │   ├── get<T>(key: StateKey<T>, defaultValue: T): T
+│   │   │   │   ├── set<T>(key: StateKey<T>, value: T): void
+│   │   │   │   ├── hasKey<T>(key: StateKey<T>): boolean
+│   │   │   │   ├── remove<T>(key: StateKey<T>): void
+│   │   │   │   ├── toJson(): string
+│   │   │   │   ├── makeStateKey<T>(key: string): StateKey<T>
+│   │   │   │   ├── onSerialize<T>(key: StateKey<T>, callback: () => T): void
+│   │   ├── withServerTransition(options: { appId: string })
+│   ├── Angular Universal
+│   │   ├── Setup
+│   │   │   ├── ng add @nguniversal/express-engine
+│   │   │   ├── server.ts
+│   │   │   ├── app.server.module.ts
+│   │   │   ├── main.server.ts
+│   │   │   ├── tsconfig.server.json
+│   │   │   ├── angular.json configurations
+│   │   │   │   ├── server
+│   │   │   │   │   ├── main: string
+│   │   │   │   │   ├── tsConfig: string
+│   │   │   │   │   ├── outputPath: string
+│   │   │   │   │   ├── fileReplacements: { replace: string, with: string }[]
+│   │   │   │   │   ├── assets: string[]
+│   │   │   │   │   ├── styles: string[]
+│   │   │   │   │   ├── scripts: string[]
+│   │   │   │   │   ├── optimization: boolean
+│   │   │   │   │   ├── sourceMap: boolean
+│   │   │   │   │   ├── externalDependencies: string[]
+│   │   │   │   ├── server-ssr
+│   │   │   │   │   ├── main: string
+│   │   │   │   │   ├── tsConfig: string
+│   │   │   │   │   ├── outputPath: string
+│   │   │   │   │   ├── fileReplacements: { replace: string, with: string }[]
+│   │   │   │   │   ├── assets: string[]
+│   │   │   │   │   ├── styles: string[]
+│   │   │   │   │   ├── scripts: string[]
+│   │   │   │   │   ├── optimization: boolean
+│   │   │   │   │   ├── sourceMap: boolean
+│   │   │   │   │   ├── externalDependencies: string[]
+│   │   ├── Express Engine
+│   │   │   ├── expressEngine(appModule: Type<any>, options: { bootstrap: Type<any>, providers?: StaticProvider[] }): (req: Request, res: Response) => void
+│   │   │   ├── server.ts configuration
+│   │   │   │   ├── enableProdMode()
+│   │   │   │   ├── express()
+│   │   │   │   ├── app.engine('html', expressEngine)
+│   │   │   │   ├── app.set('view engine', 'html')
+│   │   │   │   ├── app.set('views', distFolder)
+│   │   │   │   ├── app.get('*.*', express.static(distFolder))
+│   │   │   │   ├── app.get('*', (req, res) => res.render('index', { req }))
+│   │   │   │   ├── app.listen(PORT, () => console.log(`Node server listening on port ${PORT}`))
+│   │   ├── Prerendering
+│   │   │   ├── ng run <app>:prerender
+│   │   │   ├── routes.txt
+│   │   │   ├── prerender.ts
+│   │   │   ├── Output: static HTML files
+│   │   ├── Hydration
+│   │   │   ├── provideClientHydration(options?: HydrationOptions)
+│   │   │   │   ├── HydrationOptions
+│   │   │   │   │   ├── shouldHydrate?: (request: HydrationRequest) => boolean
+│   │   │   │   │   ├── serializer?: HydrationSerializer
+│   │   │   │   ├── Non-destructive hydration
+│   │   │   │   ├── Incremental hydration
+│   │   │   │   ├── Event replay
+│   │   │   │   ├── DOM reuse
+│   │   │   ├── BrowserModule.withServerTransition({ appId: string })
+│   │   │   ├── Hydration benefits
+│   │   │   │   ├── Improved Time to Interactive (TTI)
+│   │   │   │   ├── Reduced flicker
+│   │   │   │   ├── Faster client-side bootstrap
+│   │   ├── Transfer State
+│   │   │   ├── TransferState for server-to-client data
+│   │   │   ├── HttpClient with TransferState
+│   │   │   │   ├── Cache API responses on server
+│   │   │   │   ├── Avoid duplicate requests on client
+│   │   │   ├── makeStateKey<T>(key: string): StateKey<T>
+│   │   │   ├── get/set/hasKey/remove
+│   │   ├── Best Practices
+│   │   │   ├── Use TransferState for API data
+│   │   │   ├── Enable hydration for performance
+│   │   │   ├── Optimize server-side rendering with OnPush
+│   │   │   ├── Handle browser-specific APIs (e.g., window, document)
+│   │   │   ├── Use prerendering for static routes
+│   │   │   ├── Monitor server performance
+│   │   │   ├── Test SSR with different locales
+├── Progressive Web Apps (PWA) (JD: PWA)
+│   ├── @angular/pwa
+│   │   ├── ng add @angular/pwa
+│   │   ├── ngsw-config.json
+│   │   │   ├── index: string
+│   │   │   ├── assetGroups
+│   │   │   │   ├── name: string
+│   │   │   │   ├── installMode: 'prefetch' | 'lazy'
+│   │   │   │   ├── updateMode: 'prefetch' | 'lazy'
+│   │   │   │   ├── resources
+│   │   │   │   │   ├── files: string[]
+│   │   │   │   │   ├── urls: string[]
+│   │   │   │   │   ├── cacheQueryOptions: { ignoreSearch?: boolean }
+│   │   │   │   │   ├── versionedFiles: string[]
+│   │   │   │   │   ├── patterns: string[]
+│   │   │   │   ├── cacheBusting: { enabled: boolean }
+│   │   │   │   ├── maxSize: number
+│   │   │   │   ├── maxAge: string
+│   │   │   │   ├── timeout: string
+│   │   │   │   ├── strategy: 'performance' | 'freshness'
+│   │   │   ├── dataGroups
+│   │   │   │   ├── name: string
+│   │   │   │   ├── urls: string[]
+│   │   │   │   ├── version: number
+│   │   │   │   ├── cacheConfig
+│   │   │   │   │   ├── maxSize: number
+│   │   │   │   │   ├── maxAge: string
+│   │   │   │   │   ├── timeout: string
+│   │   │   │   │   ├── strategy: 'performance' | 'freshness'
+│   │   │   │   │   ├── refreshAhead?: { enabled: boolean, delta: number }
+│   │   │   │   │   ├── cacheOpaqueResponses: boolean
+│   │   │   ├── navigationUrls: string[]
+│   │   │   ├── navigationRequestStrategy: 'performance' | 'freshness'
+│   │   │   ├── hashTable: { [key: string]: string }
+│   │   │   ├── appData: any
+│   │   ├── manifest.json
+│   │   │   ├── name: string
+│   │   │   ├── short_name: string
+│   │   │   ├── theme_color: string
+│   │   │   ├── background_color: string
+│   │   │   ├── display: 'standalone' | 'fullscreen' | 'minimal-ui' | 'browser'
+│   │   │   ├── scope: string
+│   │   │   ├── start_url: string
+│   │   │   ├── icons: { src: string, sizes: string, type: string, purpose?: string }[]
+│   │   │   ├── screenshots: { src: string, sizes: string, type: string, platform?: string, label?: string }[]
+│   │   │   ├── related_applications: { platform: string, url: string, id?: string }[]
+│   │   │   ├── prefer_related_applications: boolean
+│   │   │   ├── categories: string[]
+│   │   │   ├── orientation: 'any' | 'natural' | 'landscape' | 'portrait' | 'landscape-primary' | 'landscape-secondary' | 'portrait-primary' | 'portrait-secondary'
+│   │   │   ├── dir: 'auto' | 'ltr' | 'rtl'
+│   │   │   ├── lang: string
+│   │   │   ├── description: string
+│   │   │   ├── iarc_rating_id: string
+│   │   │   ├── share_target: { action: string, method: 'GET' | 'POST', enctype: string, params: { title?: string, text?: string, url?: string } }
+│   │   │   ├── protocol_handlers: { protocol: string, url: string }[]
+│   │   │   ├── display_override: string[]
+│   │   ├── Service Worker
+│   │   │   ├── provideServiceWorker(url: string, options?: SwRegistrationOptions)
+│   │   │   │   ├── SwRegistrationOptions
+│   │   │   │   │   ├── enabled?: boolean
+│   │   │   │   │   ├── scope?: string
+│   │   │   │   │   ├── registrationStrategy?: string | (() => Observable<void>)
+│   │   │   │   │   ├── updateInterval?: number
+│   │   │   │   ├── SwRegistration
+│   │   │   │   │   ├── register(url: string, options?: SwRegistrationOptions): Observable<ServiceWorkerRegistration>
+│   │   │   │   │   ├── getRegistration(url: string): Observable<ServiceWorkerRegistration | null>
+│   │   │   │   │   ├── update(): Observable<void>
+│   │   │   │   │   ├── unregister(): Observable<boolean>
+│   │   │   │   ├── SwUpdate
+│   │   │   │   │   ├── available: Observable<UpdateAvailableEvent>
+│   │   │   │   │   ├── activated: Observable<UpdateActivatedEvent>
+│   │   │   │   │   ├── checkForUpdate(): Promise<void>
+│   │   │   │   │   ├── activateUpdate(): Promise<void>
+│   │   │   │   │   ├── isEnabled: boolean
+│   │   │   │   ├── SwPush
+│   │   │   │   │   ├── requestSubscription(options: PushSubscriptionOptionsInit): Promise<PushSubscription>
+│   │   │   │   │   ├── subscription: Observable<PushSubscription | null>
+│   │   │   │   │   ├── messages: Observable<object>
+│   │   │   │   │   ├── notificationClicks: Observable<{ action: string, notification: NotificationOptions & { title: string } }>
+│   │   │   │   │   ├── isEnabled: boolean
+│   │   │   │   ├── SwEvents
+│   │   │   │   │   ├── UpdateAvailableEvent
+│   │   │   │   │   │   ├── currentVersion: { hash: string, appData?: any }
+│   │   │   │   │   │   ├── availableVersion: { hash: string, appData?: any }
+│   │   │   │   │   ├── UpdateActivatedEvent
+│   │   │   │   │   │   ├── previousVersion: { hash: string, appData?: any }
+│   │   │   │   │   │   ├── currentVersion: { hash: string, appData?: any }
+│   │   │   ├── PWA Features
+│   │   │   │   ├── Offline support
+│   │   │   │   ├── Push notifications
+│   │   │   │   ├── Installable app
+│   │   │   │   ├── Caching strategies
+│   │   │   │   ├── Background sync (with custom Service Worker)
+│   │   │   │   ├── Periodic background sync (with custom Service Worker)
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Optimize ngsw-config.json for caching
+│   │   │   │   ├── Use freshness for API calls
+│   │   │   │   ├── Use performance for static assets
+│   │   │   │   ├── Handle updates with SwUpdate
+│   │   │   │   ├── Test PWA in Lighthouse
+│   │   │   │   ├── Secure push notifications with VAPID
+│   │   │   │   ├── Monitor Service Worker errors
+├── Service Workers
+│   ├── @angular/service-worker
+│   │   ├── NgServiceWorker
+│   │   │   ├── register(url: string, options?: SwRegistrationOptions): Observable<ServiceWorkerRegistration>
+│   │   │   ├── getRegistration(url: string): Observable<ServiceWorkerRegistration | null>
+│   │   │   ├── update(): Observable<void>
+│   │   │   ├── unregister(): Observable<boolean>
+│   │   ├── SwUpdate
+│   │   │   ├── available: Observable<UpdateAvailableEvent>
+│   │   │   ├── activated: Observable<UpdateActivatedEvent>
+│   │   │   ├── checkForUpdate(): Promise<void>
+│   │   │   ├── activateUpdate(): Promise<void>
+│   │   │   ├── isEnabled: boolean
+│   │   ├── SwPush
+│   │   │   ├── requestSubscription(options: PushSubscriptionOptionsInit): Promise<PushSubscription>
+│   │   │   ├── subscription: Observable<PushSubscription | null>
+│   │   │   ├── messages: Observable<object>
+│   │   │   ├── notificationClicks: Observable<{ action: string, notification: NotificationOptions & { title: string } }>
+│   │   │   ├── isEnabled: boolean
+│   │   ├── Configuration
+│   │   │   ├── ngsw-config.json (See PWA section)
+│   │   │   ├── provideServiceWorker(url: string, options?: SwRegistrationOptions)
+│   │   ├── Events
+│   │   │   ├── UpdateAvailableEvent
+│   │   │   ├── UpdateActivatedEvent
+│   │   │   ├── PushEvent
+│   │   │   ├── NotificationClickEvent
+│   │   ├── Custom Service Worker
+│   │   │   ├── Extend ngsw-worker.js
+│   │   │   ├── Handle fetch events
+│   │   │   ├── Cache custom resources
+│   │   │   ├── Background sync
+│   │   │   ├── Periodic background sync
+│   │   ├── Best Practices
+│   │   │   ├── Optimize caching strategies
+│   │   │   ├── Handle errors gracefully
+│   │   │   ├── Test Service Worker in dev mode
+│   │   │   ├── Monitor performance impact
+│   │   │   ├── Secure communications with HTTPS
+├── Web Workers
+│   ├── Setup
+│   │   ├── ng generate web-worker <name>
+│   │   ├── worker.ts
+│   │   │   ├── addEventListener('message', ({ data }) => { postMessage(response); })
+│   │   │   ├── postMessage(data: any): void
+│   │   │   ├── onmessage: (event: MessageEvent) => void
+│   │   │   ├── onmessageerror: (event: MessageEvent) => void
+│   │   │   ├── close(): void
+│   │   ├── main.ts
+│   │   │   ├── new Worker('./worker', { type: 'module' })
+│   │   │   ├── worker.postMessage(data)
+│   │   │   ├── worker.onmessage = ({ data }) => { console.log(data); }
+│   │   │   ├── worker.onerror = (error) => { console.error(error); }
+│   │   │   ├── worker.terminate()
+│   │   ├── tsconfig.worker.json
+│   │   │   ├── extends: './tsconfig.json'
+│   │   │   ├── compilerOptions: { module: 'esnext', target: 'es2018' }
+│   │   │   ├── include: ['src/**/*.worker.ts']
+│   │   ├── angular.json
+│   │   │   ├── assets: ['src/*.worker.ts']
+│   │   │   ├── webWorkerTsConfig: 'tsconfig.worker.json'
+│   │   ├── Integration
+│   │   │   ├── Component/Service
+│   │   │   │   ├── Create Worker instance
+│   │   │   │   ├── Send/receive messages
+│   │   │   │   ├── Terminate Worker
+│   │   │   ├── Use Cases
+│   │   │   │   ├── Heavy computations
+│   │   │   │   ├── Image processing
+│   │   │   │   ├── Data crunching
+│   │   │   │   ├── Background tasks
+│   │   ├── Best Practices
+│   │   │   ├── Use for CPU-intensive tasks
+│   │   │   ├── Minimize Worker creation overhead
+│   │   │   ├── Handle errors in Worker
+│   │   │   ├── Avoid DOM access in Worker
+│   │   │   ├── Test Worker in isolation
+│   │   │   ├── Optimize message passing
+├── Angular Google Maps (AGM) (JD: Map integration)
+│   ├── @agm/core
+│   │   ├── ng add @agm/core
+│   │   ├── AgmCoreModule
+│   │   │   ├── forRoot(config: MapsApiConfig): ModuleWithProviders<AgmCoreModule>
+│   │   │   │   ├── MapsApiConfig
+│   │   │   │   │   ├── apiKey: string
+│   │   │   │   │   ├── libraries?: string[]
+│   │   │   │   │   ├── language?: string
+│   │   │   │   │   ├── region?: string
+│   │   │   │   │   ├── apiVersion?: string
+│   │   │   │   │   ├── channel?: string
+│   │   │   │   │   ├── clientId?: string
+│   │   │   │   │   ├── authReferrerPolicy?: 'origin'
+│   │   ├── Components
+│   │   │   ├── agm-map
+│   │   │   │   ├── [latitude]: number
+│   │   │   │   ├── [longitude]: number
+│   │   │   │   ├── [zoom]: number
+│   │   │   │   ├── [mapTypeId]: 'roadmap' | 'satellite' | 'hybrid' | 'terrain'
+│   │   │   │   ├── [fitBounds]: LatLngBounds | LatLngBoundsLiteral
+│   │   │   │   ├── [disableDefaultUI]: boolean
+│   │   │   │   ├── [gestureHandling]: 'cooperative' | 'greedy' | 'none' | 'auto'
+│   │   │   │   ├── [scrollwheel]: boolean
+│   │   │   │   ├── [styles]: MapTypeStyle[]
+│   │   │   │   ├── (mapClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (mapDblClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (mapRightClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (mapDrag): EventEmitter<void>
+│   │   │   │   ├── (mapDragEnd): EventEmitter<void>
+│   │   │   │   ├── (mapDragStart): EventEmitter<void>
+│   │   │   │   ├── (boundsChange): EventEmitter<LatLngBounds>
+│   │   │   │   ├── (centerChange): EventEmitter<LatLngLiteral>
+│   │   │   │   ├── (headingChange): EventEmitter<number>
+│   │   │   │   ├── (idle): EventEmitter<void>
+│   │   │   │   ├── (mapTypeIdChange): EventEmitter<string>
+│   │   │   │   ├── (tilesLoaded): EventEmitter<void>
+│   │   │   │   ├── (zoomChange): EventEmitter<number>
+│   │   │   │   ├── map: google.maps.Map
+│   │   │   ├── agm-marker
+│   │   │   │   ├── [latitude]: number
+│   │   │   │   ├── [longitude]: number
+│   │   │   │   ├── [title]: string
+│   │   │   │   ├── [label]: string | MarkerLabel
+│   │   │   │   ├── [iconUrl]: string
+│   │   │   │   ├── [animation]: 'BOUNCE' | 'DROP'
+│   │   │   │   ├── [draggable]: boolean
+│   │   │   │   ├── [visible]: boolean
+│   │   │   │   ├── [zIndex]: number
+│   │   │   │   ├── (markerClick): EventEmitter<void>
+│   │   │   │   ├── (markerDblClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (markerRightClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (markerDrag): EventEmitter<MouseEvent>
+│   │   │   │   ├── (markerDragEnd): EventEmitter<MouseEvent>
+│   │   │   │   ├── (markerDragStart): EventEmitter<MouseEvent>
+│   │   │   │   ├── marker: google.maps.Marker
+│   │   │   ├── agm-info-window
+│   │   │   │   ├── [latitude]: number
+│   │   │   │   ├── [longitude]: number
+│   │   │   │   ├── [maxWidth]: number
+│   │   │   │   ├── [zIndex]: number
+│   │   │   │   ├── [isOpen]: boolean
+│   │   │   │   ├── (infoWindowOpen): EventEmitter<void>
+│   │   │   │   ├── (infoWindowClose): EventEmitter<void>
+│   │   │   │   ├── infoWindow: google.maps.InfoWindow
+│   │   │   ├── agm-polyline
+│   │   │   │   ├── [path]: LatLngLiteral[]
+│   │   │   │   ├── [strokeColor]: string
+│   │   │   │   ├── [strokeOpacity]: number
+│   │   │   │   ├── [strokeWeight]: number
+│   │   │   │   ├── [geodesic]: boolean
+│   │   │   │   ├── [draggable]: boolean
+│   │   │   │   ├── [editable]: boolean
+│   │   │   │   ├── [visible]: boolean
+│   │   │   │   ├── (polylineClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polylineDblClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polylineRightClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polylineDrag): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polylineDragEnd): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polylineDragStart): EventEmitter<MouseEvent>
+│   │   │   │   ├── polyline: google.maps.Polyline
+│   │   │   ├── agm-polygon
+│   │   │   │   ├── [paths]: LatLngLiteral[] | LatLngLiteral[][]
+│   │   │   │   ├── [strokeColor]: string
+│   │   │   │   ├── [strokeOpacity]: number
+│   │   │   │   ├── [strokeWeight]: number
+│   │   │   │   ├── [fillColor]: string
+│   │   │   │   ├── [fillOpacity]: number
+│   │   │   │   ├── [geodesic]: boolean
+│   │   │   │   ├── [draggable]: boolean
+│   │   │   │   ├── [editable]: boolean
+│   │   │   │   ├── [visible]: boolean
+│   │   │   │   ├── (polygonClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polygonDblClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polygonRightClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polygonDrag): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polygonDragEnd): EventEmitter<MouseEvent>
+│   │   │   │   ├── (polygonDragStart): EventEmitter<MouseEvent>
+│   │   │   │   ├── polygon: google.maps.Polygon
+│   │   │   ├── agm-circle
+│   │   │   │   ├── [center]: LatLngLiteral
+│   │   │   │   ├── [radius]: number
+│   │   │   │   ├── [strokeColor]: string
+│   │   │   │   ├── [strokeOpacity]: number
+│   │   │   │   ├── [strokeWeight]: number
+│   │   │   │   ├── [fillColor]: string
+│   │   │   │   ├── [fillOpacity]: number
+│   │   │   │   ├── [draggable]: boolean
+│   │   │   │   ├── [editable]: boolean
+│   │   │   │   ├── [visible]: boolean
+│   │   │   │   ├── (circleClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (circleDblClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (circleRightClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (circleDrag): EventEmitter<MouseEvent>
+│   │   │   │   ├── (circleDragEnd): EventEmitter<MouseEvent>
+│   │   │   │   ├── (circleDragStart): EventEmitter<MouseEvent>
+│   │   │   │   ├── circle: google.maps.Circle
+│   │   │   ├── agm-rectangle
+│   │   │   │   ├── [bounds]: LatLngBoundsLiteral
+│   │   │   │   ├── [strokeColor]: string
+│   │   │   │   ├── [strokeOpacity]: number
+│   │   │   │   ├── [strokeWeight]: number
+│   │   │   │   ├── [fillColor]: string
+│   │   │   │   ├── [fillOpacity]: number
+│   │   │   │   ├── [draggable]: boolean
+│   │   │   │   ├── [editable]: boolean
+│   │   │   │   ├── [visible]: boolean
+│   │   │   │   ├── (rectangleClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (rectangleDblClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (rectangleRightClick): EventEmitter<MouseEvent>
+│   │   │   │   ├── (rectangleDrag): EventEmitter<MouseEvent>
+│   │   │   │   ├── (rectangleDragEnd): EventEmitter<MouseEvent>
+│   │   │   │   ├── (rectangleDragStart): EventEmitter<MouseEvent>
+│   │   │   │   ├── rectangle: google.maps.Rectangle
+│   │   ├── Directives
+│   │   │   ├── agm-map-type
+│   │   │   │   ├── [name]: string
+│   │   │   │   ├── [options]: MapTypeOptions
+│   │   │   ├── agm-overlay
+│   │   │   │   ├── [latitude]: number
+│   │   │   │   ├── [longitude]: number
+│   │   │   │   ├── [bounds]: LatLngBoundsLiteral
+│   │   │   │   ├── [image]: string
+│   │   │   │   ├── [opacity]: number
+│   │   │   │   ├── overlay: google.maps.GroundOverlay
+│   │   ├── Services
+│   │   │   ├── MapsAPILoader
+│   │   │   │   ├── load(): Promise<void>
+│   │   │   │   ├── createApiWrapper(): Observable<MapsApiWrapper>
+│   │   │   ├── GoogleMapsAPIWrapper
+│   │   │   │   ├── createMap(el: HTMLElement, options: google.maps.MapOptions): Promise<google.maps.Map>
+│   │   │   │   ├── createMarker(options: google.maps.MarkerOptions): Promise<google.maps.Marker>
+│   │   │   │   ├── createInfoWindow(options: google.maps.InfoWindowOptions): Promise<google.maps.InfoWindow>
+│   │   │   │   ├── createPolyline(options: google.maps.PolylineOptions): Promise<google.maps.Polyline>
+│   │   │   │   ├── createPolygon(options: google.maps.PolygonOptions): Promise<google.maps.Polygon>
+│   │   │   │   ├── createCircle(options: google.maps.CircleOptions): Promise<google.maps.Circle>
+│   │   │   │   ├── createRectangle(options: google.maps.RectangleOptions): Promise<google.maps.Rectangle>
+│   │   │   │   ├── createGroundOverlay(options: google.maps.GroundOverlayOptions): Promise<google.maps.GroundOverlay>
+│   │   │   │   ├── setCenter(latLng: LatLngLiteral): Promise<void>
+│   │   │   │   ├── setZoom(zoom: number): Promise<void>
+│   │   │   │   ├── setBounds(bounds: LatLngBounds | LatLngBoundsLiteral): Promise<void>
+│   │   │   │   ├── panTo(latLng: LatLngLiteral): Promise<void>
+│   │   │   │   ├── fitBounds(bounds: LatLngBounds | LatLngBoundsLiteral): Promise<void>
+│   │   │   │   ├── getNativeMap(): Promise<google.maps.Map>
+│   │   │   ├── GeoCoder
+│   │   │   │   ├── geocode(request: google.maps.GeocoderRequest): Promise<google.maps.GeocoderResult[]>
+│   │   │   │   ├── geocodeLatLng(latLng: LatLngLiteral): Promise<google.maps.GeocoderResult[]>
+│   │   │   │   ├── geocodeAddress(address: string): Promise<google.maps.GeocoderResult[]>
+│   │   │   ├── PlacesService
+│   │   │   │   ├── nearbySearch(request: google.maps.places.PlaceSearchRequest): Promise<google.maps.places.PlaceResult[]>
+│   │   │   │   ├── textSearch(request: google.maps.places.TextSearchRequest): Promise<google.maps.places.PlaceResult[]>
+│   │   │   │   ├── findPlaceFromQuery(request: google.maps.places.FindPlaceFromQueryRequest): Promise<google.maps.places.PlaceResult[]>
+│   │   │   │   ├── findPlaceFromPhoneNumber(request: google.maps.places.FindPlaceFromPhoneNumberRequest): Promise<google.maps.places.PlaceResult[]>
+│   │   │   │   ├── getDetails(request: google.maps.places.PlaceDetailsRequest): Promise<google.maps.places.PlaceResult>
+│   │   ├── Best Practices
+│   │   │   ├── Secure API key
+│   │   │   ├── Lazy load Google Maps API
+│   │   │   ├── Optimize map rendering
+│   │   │   ├── Use RxJS for async operations
+│   │   │   ├── Handle errors gracefully
+│   │   │   ├── Test map interactions
+│   │   │   ├── Optimize for mobile
+├── Performance Optimizations (JD: Performance)
+│   ├── Change Detection
+│   │   ├── OnPush Strategy
+│   │   │   ├── ChangeDetectionStrategy.OnPush
+│   │   │   ├── MarkForCheck with ChangeDetectorRef
+│   │   │   ├── Benefits
+│   │   │   │   ├── Reduced change detection cycles
+│   │   │   │   ├── Faster rendering
+│   │   │   ├── Use with immutable data
+│   │   │   ├── Use with Observables + AsyncPipe
+│   │   ├── Zoneless Change Detection
+│   │   │   ├── provideExperimentalZonelessChangeDetection()
+│   │   │   ├── Signal-based reactivity
+│   │   │   ├── Benefits
+│   │   │   │   ├── No Zone.js overhead
+│   │   │   │   ├── Simplified change detection
+│   │   │   ├── Limitations
+│   │   │   │   ├── Experimental in v19
+│   │   │   │   ├── Requires signal-based components
+│   │   ├── Detach/Attach
+│   │   │   ├── ChangeDetectorRef.detach()
+│   │   │   ├── ChangeDetectorRef.reattach()
+│   │   │   ├── Use for heavy components
+│   │   ├── Pure Pipes
+│   │   │   ├── pure: true
+│   │   │   ├── Memoization for performance
+│   │   │   ├── Avoid complex logic
+│   │   ├── TrackBy in *ngFor
+│   │   │   ├── trackBy: (index: number, item: any) => any
+│   │   │   ├── Reduces DOM operations
+│   │   │   ├── Use unique identifiers
+│   │   ├── Lazy Loading
+│   │   │   ├── Route-based lazy loading
+│   │   │   ├── Component-based lazy loading
+│   │   │   ├── Benefits
+│   │   │   │   ├── Smaller initial bundle
+│   │   │   │   ├── Faster load time
+│   │   ├── Tree Shaking
+│   │   │   ├── Standalone components
+│   │   │   ├── Remove unused imports
+│   │   │   ├── Use providedIn: 'root'
+│   │   │   ├── Optimize RxJS imports
+│   │   │   │   ├── Import specific operators
+│   │   │   │   ├── Avoid import 'rxjs'
+│   │   ├── Build Optimizations
+│   │   │   ├── ng build --prod
+│   │   │   ├── AOT compilation
+│   │   │   │   ├── Faster rendering
+│   │   │   │   ├── Smaller bundle size
+│   │   │   ├── Minification
+│   │   │   │   ├── Terser
+│   │   │   │   ├── Remove comments
+│   │   │   │   ├── Compress code
+│   │   │   ├── Differential Loading
+│   │   │   │   ├── ES2015 for modern browsers
+│   │   │   │   ├── ES5 for legacy browsers
+│   │   │   ├── Bundle Analysis
+│   │   │   │   ├── webpack-bundle-analyzer
+│   │   │   │   ├── Source-map-explorer
+│   │   ├── Runtime Optimizations
+│   │   │   ├── Avoid heavy computations in templates
+│   │   │   ├── Use pure functions
+│   │   │   ├── Optimize animations
+│   │   │   │   ├── Use transform/opacity
+│   │   │   │   ├── Avoid layout thrashing
+│   │   │   ├── Debounce/Throttle events
+│   │   │   │   ├── debounceTime
+│   │   │   │   ├── throttleTime
+│   │   │   ├── Use Web Workers for heavy tasks
+│   │   │   ├── Optimize images
+│   │   │   │   ├── Use WebP format
+│   │   │   │   ├── Lazy load images
+│   │   │   │   ├── ngSrc with image optimization
+│   │   ├── Best Practices
+│   │   │   ├── Profile with Chrome DevTools
+│   │   │   ├── Use Lighthouse for audits
+│   │   │   ├── Monitor bundle size
+│   │   │   ├── Optimize third-party libraries
+│   │   │   ├── Use OnPush for large apps
+│   │   │   ├── Experiment with zoneless CD
+│   │   │   ├── Lazy load everything possible
+├── Security Best Practices (JD: Security)
+│   ├── Cross-Site Scripting (XSS)
+│   │   ├── Angular Sanitization
+│   │   │   ├── DomSanitizer
+│   │   │   │   ├── bypassSecurityTrustHtml(html: string): SafeHtml
+│   │   │   │   ├── bypassSecurityTrustStyle(style: string): SafeStyle
+│   │   │   │   ├── bypassSecurityTrustScript(script: string): SafeScript
+│   │   │   │   ├── bypassSecurityTrustUrl(url: string): SafeUrl
+│   │   │   │   ├── bypassSecurityTrustResourceUrl(url: string): SafeResourceUrl
+│   │   │   │   ├── sanitize(context: SecurityContext, value: any): string | null
+│   │   │   │   ├── sanitizeHtml(html: string): string
+│   │   │   │   ├── sanitizeStyle(style: string): string
+│   │   │   │   ├── sanitizeScript(script: string): string
+│   │   │   │   ├── sanitizeUrl(url: string): string
+│   │   │   │   ├── sanitizeResourceUrl(url: string): string
+│   │   │   ├── SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl
+│   │   │   ├── Automatic sanitization
+│   │   │   │   ├── Template bindings
+│   │   │   │   ├── Property bindings
+│   │   │   │   ├── Attribute bindings
+│   │   │   ├── Avoid innerHTML
+│   │   │   ├── Use [innerHTML] with sanitized input
+│   │   ├── Best Practices
+│   │   │   ├── Sanitize all dynamic content
+│   │   │   ├── Avoid bypassSecurityTrust unless necessary
+│   │   │   ├── Validate user inputs
+│   │   │   ├── Use Angular templates over DOM manipulation
+│   │   │   ├── Audit third-party libraries
+├── Angular CLI (JD: Tooling)
+│   ├── Overview
+│   │   ├── CLI for project scaffolding, building, testing, and deployment
+│   │   ├── Version: @angular/cli v19
+│   │   ├── Installation: npm install -g @angular/cli
+│   ├── Commands
+│   │   ├── ng new <project-name>
+│   │   │   ├── --standalone: boolean (default: true)
+│   │   │   ├── --ssr: boolean (default: false)
+│   │   │   ├── --style: 'css' | 'scss' | 'sass' | 'less'
+│   │   │   ├── --routing: boolean
+│   │   │   ├── --skip-git: boolean
+│   │   │   ├── --skip-install: boolean
+│   │   │   ├── --skip-tests: boolean
+│   │   │   ├── --inline-style: boolean
+│   │   │   ├── --inline-template: boolean
+│   │   │   ├── Output: Project structure with angular.json, src/, package.json
+│   │   ├── ng generate (ng g)
+│   │   │   ├── component <name>
+│   │   │   │   ├── --standalone: boolean
+│   │   │   │   ├── --inline-style: boolean
+│   │   │   │   ├── --inline-template: boolean
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   │   ├── --change-detection: 'Default' | 'OnPush'
+│   │   │   │   ├── --style: 'css' | 'scss' | 'sass' | 'less'
+│   │   │   │   ├── --prefix: string
+│   │   │   │   ├── --export: boolean
+│   │   │   │   ├── --project: string
+│   │   │   ├── directive <name>
+│   │   │   │   ├── --standalone: boolean
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   │   ├── --prefix: string
+│   │   │   │   ├── --export: boolean
+│   │   │   ├── pipe <name>
+│   │   │   │   ├── --standalone: boolean
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   │   ├── --export: boolean
+│   │   │   ├── service <name>
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   │   ├── --provided-in: 'root' | 'platform' | 'any' | string
+│   │   │   ├── guard <name>
+│   │   │   │   ├── --implements: 'CanActivate' | 'CanActivateChild' | 'CanDeactivate' | 'CanLoad' | 'CanMatch'
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   ├── interceptor <name>
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   ├── module <name>
+│   │   │   │   ├── --routing: boolean
+│   │   │   │   ├── --route: string
+│   │   │   │   ├── --module: string
+│   │   │   ├── class <name>
+│   │   │   │   ├── --type: string
+│   │   │   │   ├── --skip-tests: boolean
+│   │   │   ├── interface <name>
+│   │   │   │   ├── --type: string
+│   │   │   ├── enum <name>
+│   │   │   │   ├── --type: string
+│   │   │   ├── web-worker <name>
+│   │   │   │   ├── --project: string
+│   │   │   ├── library <name>
+│   │   │   │   ├── --prefix: string
+│   │   │   │   ├── --skip-install: boolean
+│   │   │   ├── application <name>
+│   │   │   │   ├── --routing: boolean
+│   │   │   │   ├── --style: 'css' | 'scss' | 'sass' | 'less'
+│   │   │   │   ├── --ssr: boolean
+│   │   │   ├── workspace
+│   │   │   │   ├── --new-project-root: string
+│   │   │   ├── schematic <name>
+│   │   │   │   ├── --force: boolean
+│   │   │   │   ├── --dry-run: boolean
+│   │   ├── ng build
+│   │   │   ├── --configuration: string (e.g., production, development)
+│   │   │   ├── --output-path: string
+│   │   │   ├── --base-href: string
+│   │   │   ├── --deploy-url: string
+│   │   │   ├── --source-map: boolean
+│   │   │   ├── --optimization: boolean
+│   │   │   ├── --aot: boolean
+│   │   │   ├── --build-optimizer: boolean
+│   │   │   ├── --stats-json: boolean
+│   │   │   ├── --watch: boolean
+│   │   │   ├── --verbose: boolean
+│   │   │   ├── Output: dist/ folder
+│   │   ├── ng serve
+│   │   │   ├── --port: number
+│   │   │   ├── --host: string
+│   │   │   ├── --open: boolean
+│   │   │   ├── --live-reload: boolean
+│   │   │   ├── --ssl: boolean
+│   │   │   ├── --proxy-config: string
+│   │   │   ├── --configuration: string
+│   │   │   ├── --hmr: boolean (Hot Module Replacement)
+│   │   │   ├── --watch: boolean
+│   │   │   ├── --public-host: string
+│   │   ├── ng add <package>
+│   │   │   ├── Installs and configures package (e.g., @angular/pwa, @agm/core)
+│   │   │   ├── --project: string
+│   │   │   ├── --defaults: boolean
+│   │   ├── ng update
+│   │   │   ├── Updates Angular and dependencies
+│   │   │   ├── --from: string
+│   │   │   ├── --to: string
+│   │   │   ├── --migrate-only: boolean
+│   │   │   ├── --allow-dirty: boolean
+│   │   │   ├── --force: boolean
+│   │   ├── ng config
+│   │   │   ├── Get/set angular.json configurations
+│   │   │   ├── --global: boolean
+│   │   │   ├── <key> <value>
+│   │   ├── ng doc <keyword>
+│   │   │   ├── Opens Angular documentation
+│   │   │   ├── --search: boolean
+│   │   ├── ng extract-i18n
+│   │   │   ├── Extracts i18n messages
+│   │   │   ├── --format: 'xlf' | 'xmb' | 'json'
+│   │   │   ├── --output-path: string
+│   │   │   ├── --locale: string
+│   │   ├── ng lint
+│   │   │   ├── Runs ESLint
+│   │   │   ├── --fix: boolean
+│   │   │   ├── --force: boolean
+│   │   │   ├── --format: string
+│   │   ├── ng cache
+│   │   │   ├── Manages build cache
+│   │   │   ├── clean
+│   │   │   ├── disable
+│   │   │   ├── enable
+│   │   │   ├── info
+│   │   ├── ng completion
+│   │   │   ├── Enables CLI autocompletion
+│   │   │   ├── script
+│   │   ├── ng version
+│   │   │   ├── Displays CLI and dependency versions
+│   │   ├── ng analytics
+│   │   │   ├── Configures telemetry
+│   │   │   ├── on | off | prompt | ci
+│   ├── Configuration
+│   │   ├── angular.json
+│   │   │   ├── projects
+│   │   │   │   ├── <project-name>
+│   │   │   │   │   ├── root: string
+│   │   │   │   │   ├── sourceRoot: string
+│   │   │   │   │   ├── projectType: 'application' | 'library'
+│   │   │   │   │   ├── prefix: string
+│   │   │   │   │   ├── architect
+│   │   │   │   │   │   ├── build
+│   │   │   │   │   │   │   ├── builder: '@angular-devkit/build-angular:application'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── outputPath: string
+│   │   │   │   │   │   │   │   ├── index: string
+│   │   │   │   │   │   │   │   ├── browser: string
+│   │   │   │   │   │   │   │   ├── tsConfig: string
+│   │   │   │   │   │   │   │   ├── assets: string[]
+│   │   │   │   │   │   │   │   ├── styles: string[]
+│   │   │   │   │   │   │   │   ├── scripts: string[]
+│   │   │   │   │   │   │   │   ├── optimization: boolean
+│   │   │   │   │   │   │   │   ├── sourceMap: boolean
+│   │   │   │   │   │   │   │   ├── aot: boolean
+│   │   │   │   │   │   │   │   ├── buildOptimizer: boolean
+│   │   │   │   │   │   │   │   ├── fileReplacements: { replace: string, with: string }[]
+│   │   │   │   │   │   │   │   ├── serviceWorker: boolean | string
+│   │   │   │   │   │   │   │   ├── webWorkerTsConfig: string
+│   │   │   │   │   │   │   │   ├── polyfills: string[]
+│   │   │   │   │   │   │   │   ├── baseHref: string
+│   │   │   │   │   │   │   │   ├── deployUrl: string
+│   │   │   │   │   │   │   │   ├── i18nMissingTranslation: 'warning' | 'error' | 'ignore'
+│   │   │   │   │   │   │   │   ├── i18nDuplicateTranslation: 'warning' | 'error' | 'ignore'
+│   │   │   │   │   │   │   ├── configurations
+│   │   │   │   │   │   │   │   ├── production
+│   │   │   │   │   │   │   │   ├── development
+│   │   │   │   │   │   │   │   ├── <custom>
+│   │   │   │   │   │   ├── serve
+│   │   │   │   │   │   │   ├── builder: '@angular-devkit/build-angular:dev-server'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── browserTarget: string
+│   │   │   │   │   │   │   │   ├── port: number
+│   │   │   │   │   │   │   │   ├── host: string
+│   │   │   │   │   │   │   │   ├── proxyConfig: string
+│   │   │   │   │   │   │   │   ├── ssl: boolean
+│   │   │   │   │   │   │   │   ├── liveReload: boolean
+│   │   │   │   │   │   │   │   ├── hmr: boolean
+│   │   │   │   │   │   │   ├── configurations
+│   │   │   │   │   │   │   │   ├── production
+│   │   │   │   │   │   │   │   ├── development
+│   │   │   │   │   │   ├── extract-i18n
+│   │   │   │   │   │   │   ├── builder: '@angular-devkit/build-angular:extract-i18n'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── browserTarget: string
+│   │   │   │   │   │   │   │   ├── format: 'xlf' | 'xmb' | 'json'
+│   │   │   │   │   │   │   │   ├── outputPath: string
+│   │   │   │   │   │   ├── server
+│   │   │   │   │   │   │   ├── builder: '@angular-devkit/build-angular:server'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── outputPath: string
+│   │   │   │   │   │   │   │   ├── main: string
+│   │   │   │   │   │   │   │   ├── tsConfig: string
+│   │   │   │   │   │   │   │   ├── optimization: boolean
+│   │   │   │   │   │   │   │   ├── sourceMap: boolean
+│   │   │   │   │   │   │   │   ├── fileReplacements: { replace: string, with: string }[]
+│   │   │   │   │   │   │   │   ├── externalDependencies: string[]
+│   │   │   │   │   │   │   ├── configurations
+│   │   │   │   │   │   │   │   ├── production
+│   │   │   │   │   │   │   │   ├── development
+│   │   │   │   │   │   ├── prerender
+│   │   │   │   │   │   │   ├── builder: '@angular-devkit/build-angular:prerender'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── browserTarget: string
+│   │   │   │   │   │   │   │   ├── serverTarget: string
+│   │   │   │   │   │   │   │   ├── routes: string[]
+│   │   │   │   │   │   │   │   ├── guessRoutes: boolean
+│   │   │   │   │   │   │   │   ├── numProcesses: number
+│   │   │   │   │   │   │   ├── configurations
+│   │   │   │   │   │   │   │   ├── production
+│   │   │   │   │   │   │   │   ├── development
+│   │   │   │   │   │   ├── server-ssr
+│   │   │   │   │   │   │   ├── builder: '@angular-devkit/build-angular:server-ssr'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── browserTarget: string
+│   │   │   │   │   │   │   │   ├── serverTarget: string
+│   │   │   │   │   │   │   │   ├── outputPath: string
+│   │   │   │   │   │   │   │   ├── optimization: boolean
+│   │   │   │   │   │   │   │   ├── sourceMap: boolean
+│   │   │   │   │   │   │   ├── configurations
+│   │   │   │   │   │   │   │   ├── production
+│   │   │   │   │   │   │   │   ├── development
+│   │   │   │   │   │   ├── lint
+│   │   │   │   │   │   │   ├── builder: '@angular-eslint/builder:lint'
+│   │   │   │   │   │   │   ├── options
+│   │   │   │   │   │   │   │   ├── lintFilePatterns: string[]
+│   │   │   │   │   │   │   │   ├── exclude: string[]
+│   │   │   │   │   │   │   │   ├── maxWarnings: number
+│   │   │   │   │   │   │   │   ├── quiet: boolean
+│   │   │   │   │   │   │   │   ├── fix: boolean
+│   │   │   │   │   │   │   │   ├── format: string
+│   │   │   │   │   │   ├── cache
+│   │   │   │   │   │   │   ├── enabled: boolean
+│   │   │   │   │   │   │   ├── path: string
+│   │   │   │   │   │   │   ├── maxSize: number
+│   │   │   │   │   │   │   ├── environment: string[]
+│   │   │   │   │   │   │   ├── disk: boolean
+│   │   │   │   │   │   │   ├── global: boolean
+│   │   │   │   │   │   │   ├── memory: boolean
+│   │   │   │   │   │   │   ├── store: string
+│   │   │   │   │   │   │   ├── verbose: boolean
+│   │   │   ├── cli
+│   │   │   │   ├── defaultCollection: string
+│   │   │   │   ├── warnings: { versionMismatch: boolean }
+│   │   │   │   ├── packageManager: 'npm' | 'yarn' | 'pnpm'
+│   │   │   ├── schematics
+│   │   │   │   ├── <schematic-name>: { <key>: <value> }
+│   │   │   ├── defaultProject: string
+│   │   ├── .angular-cli.json (Optional, for backward compatibility)
+│   │   ├── Global CLI Config: ~/.angular-config.json
+│   │   │   ├── analytics: boolean
+│   │   │   ├── cache: { enabled: boolean, path: string, environment: string[] }
+│   │   │   ├── cli: { completion: { enabled: boolean, prompt: boolean }, packageManager: string }
+│   ├── Schematics
+│   │   ├── Custom Schematics
+│   │   │   ├── ng generate schematic <name>
+│   │   │   ├── Schematic CLI: @angular-devkit/schematics-cli
+│   │   │   ├── schematic.json
+│   │   │   │   ├── id: string
+│   │   │   │   ├── description: string
+│   │   │   │   ├── schema: string
+│   │   │   │   ├── aliases: string[]
+│   │   │   │   ├── extends: string
+│   │   │   ├── Schema Types
+│   │   │   │   ├── Rule
+│   │   │   │   │   ├── (source: Source, context: SchematicContext) => Source | Tree | Observable<Tree>
+│   │   │   │   ├── Tree
+│   │   │   │   │   ├── create(path: string, content: Buffer | string): Tree
+│   │   │   │   │   ├── read(path: string): Buffer | null
+│   │   │   │   │   ├── overwrite(path: string, content: Buffer | string): Tree
+│   │   │   │   │   ├── delete(path: string): Tree
+│   │   │   │   │   ├── exists(path: string): boolean
+│   │   │   │   │   ├── get(path: string): FileEntry | null
+│   │   │   │   │   ├── getDir(path: string): DirEntry
+│   │   │   │   │   ├── merge(other: Tree, strategy?: MergeStrategy): Tree
+│   │   │   │   │   ├── beginUpdate(path: string): UpdateRecorder
+│   │   │   │   │   ├── commitUpdate(recorder: UpdateRecorder): Tree
+│   │   │   │   │   ├── apply(source: Source, options?: ApplyOptions): Observable<Tree>
+│   │   │   │   │   ├── branch(): Tree
+│   │   │   │   │   ├── actions: Action[]
+│   │   │   │   │   ├── root: DirEntry
+│   │   │   │   ├── SchematicContext
+│   │   │   │   │   ├── logger: LoggerApi
+│   │   │   │   │   ├── engine: Engine<{}, {}>
+│   │   │   │   │   ├── schematic: Schematic<{}, {}>
+│   │   │   │   │   ├── strategy: MergeStrategy
+│   │   │   │   │   ├── interactive: boolean
+│   │   │   │   │   ├── debug: boolean
+│   │   │   │   │   ├── addTask(task: TaskExecutor, dependencies?: string[]): string
+│   │   │   │   ├── Source
+│   │   │   │   │   ├── (context: SchematicContext) => Tree | Observable<Tree>
+│   │   │   │   ├── FileEntry
+│   │   │   │   │   ├── path: string
+│   │   │   │   │   ├── content: Buffer
+│   │   │   │   ├── DirEntry
+│   │   │   │   │   ├── path: string
+│   │   │   │   │   ├── parent: DirEntry | null
+│   │   │   │   │   ├── subdirs: string[]
+│   │   │   │   │   ├── subfiles: string[]
+│   │   │   │   │   ├── dir(name: string): DirEntry
+│   │   │   │   │   ├── file(name: string): FileEntry | null
+│   │   │   │   ├── UpdateRecorder
+│   │   │   │   │   ├── insertLeft(index: number, content: Buffer | string): UpdateRecorder
+│   │   │   │   │   ├── insertRight(index: number, content: Buffer | string): UpdateRecorder
+│   │   │   │   │   ├── remove(index: number, length: number): UpdateRecorder
+│   │   │   │   ├── Action
+│   │   │   │   │   ├── CreateFileAction
+│   │   │   │   │   ├── OverwriteFileAction
+│   │   │   │   │   ├── DeleteFileAction
+│   │   │   │   │   ├── RenameFileAction
+│   │   │   │   ├── MergeStrategy
+│   │   │   │   │   ├── Overwrite
+│   │   │   │   │   ├── Error
+│   │   │   │   ├── TaskExecutor
+│   │   │   │   │   ├── (options: any) => Observable<void>
+│   │   │   ├── Built-in Schematics
+│   │   │   │   ├── @schematics/angular
+│   │   │   │   │   ├── component
+│   │   │   │   │   ├── directive
+│   │   │   │   │   ├── pipe
+│   │   │   │   │   ├── service
+│   │   │   │   │   ├── guard
+│   │   │   │   │   ├── interceptor
+│   │   │   │   │   ├── module
+│   │   │   │   │   ├── class
+│   │   │   │   │   ├── interface
+│   │   │   │   │   ├── enum
+│   │   │   │   │   ├── web-worker
+│   │   │   │   │   ├── library
+│   │   │   │   │   ├── application
+│   │   │   │   │   ├── workspace
+│   │   │   │   ├── @nguniversal
+│   │   │   │   │   ├── express-engine
+│   │   │   │   │   ├── common-engine
+│   │   │   │   ├── @angular/pwa
+│   │   │   │   │   ├── pwa
+│   │   │   │   ├── @agm/core
+│   │   │   │   │   ├── agm-core
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Use schematics for automation
+│   │   │   │   ├── Test schematics with dry-run
+│   │   │   │   ├── Modularize schematics
+│   │   │   │   ├── Handle edge cases
+│   │   │   │   ├── Document schema.json
+│   │   │   │   ├── Use Tree for file manipulation
+│   ├── Best Practices
+│   │   ├── Use standalone components by default
+│   │   ├── Leverage configurations for environments
+│   │   ├── Automate with schematics
+│   │   ├── Optimize builds with cache
+│   │   ├── Use lint for code quality
+│   │   ├── Update regularly with ng update
+│   │   ├── Monitor CLI analytics
+│   │   ├── Use proxy for API calls
+│   │   ├── Enable HMR for faster development
+├── Build System Architecture
+│   ├── @angular-devkit/build-angular
+│   │   ├── Builders
+│   │   │   ├── application
+│   │   │   │   ├── Builds Angular application
+│   │   │   │   ├── Supports AOT, SSR, hydration
+│   │   │   │   ├── Options: angular.json build.options
+│   │   │   ├── dev-server
+│   │   │   │   ├── Runs development server
+│   │   │   │   ├── Supports HMR, live reload
+│   │   │   │   ├── Options: angular.json serve.options
+│   │   │   ├── server
+│   │   │   │   ├── Builds server-side bundle
+│   │   │   │   ├── Supports SSR
+│   │   │   │   ├── Options: angular.json server.options
+│   │   │   ├── prerender
+│   │   │   │   ├── Prerenders static routes
+│   │   │   │   ├── Options: angular.json prerender.options
+│   │   │   ├── server-ssr
+│   │   │   │   ├── Builds SSR-enabled application
+│   │   │   │   ├── Options: angular.json server-ssr.options
+│   │   │   ├── extract-i18n
+│   │   │   │   ├── Extracts i18n messages
+│   │   │   │   ├── Options: angular.json extract-i18n.options
+│   │   │   ├── lint
+│   │   │   │   ├── Runs ESLint
+│   │   │   │   ├── Options: angular.json lint.options
+│   │   ├── Webpack Integration
+│   │   │   ├── Webpack 5+
+│   │   │   ├── Configuration: webpack.config.js (optional)
+│   │   │   ├── Plugins
+│   │   │   │   ├── AngularWebpackPlugin
+│   │   │   │   │   ├── Handles Angular-specific compilation
+│   │   │   │   │   ├── Supports AOT, JIT
+│   │   │   │   │   ├── Optimizes bundle size
+│   │   │   │   ├── TerserPlugin
+│   │   │   │   │   ├── Minifies JavaScript
+│   │   │   │   │   ├── Removes comments
+│   │   │   │   │   ├── Compresses code
+│   │   │   │   ├── CopyWebpackPlugin
+│   │   │   │   │   ├── Copies assets
+│   │   │   │   │   ├── Handles images, fonts
+│   │   │   │   ├── MiniCssExtractPlugin
+│   │   │   │   │   ├── Extracts CSS into files
+│   │   │   │   │   ├── Optimizes styles
+│   │   │   │   ├── HtmlWebpackPlugin
+│   │   │   │   │   ├── Generates index.html
+│   │   │   │   │   ├── Injects scripts/styles
+│   │   │   │   ├── ProgressPlugin
+│   │   │   │   │   ├── Displays build progress
+│   │   │   │   ├── DefinePlugin
+│   │   │   │   │   ├── Injects environment variables
+│   │   │   │   ├── EsbuildPlugin (Experimental)
+│   │   │   │   │   ├── Faster builds
+│   │   │   │   │   ├── Supports tree shaking
+│   │   │   ├── Loaders
+│   │   │   │   ├── ts-loader
+│   │   │   │   │   ├── Compiles TypeScript
+│   │   │   │   │   ├── Supports Angular decorators
+│   │   │   │   ├── css-loader
+│   │   │   │   │   ├── Processes CSS
+│   │   │   │   │   ├── Handles imports
+│   │   │   │   ├── sass-loader
+│   │   │   │   │   ├── Compiles SCSS/SASS
+│   │   │   │   │   ├── Supports variables
+│   │   │   │   ├── less-loader
+│   │   │   │   │   ├── Compiles LESS
+│   │   │   │   │   ├── Supports mixins
+│   │   │   │   ├── file-loader
+│   │   │   │   │   ├── Handles images, fonts
+│   │   │   │   │   ├── Outputs to dist/
+│   │   │   │   ├── url-loader
+│   │   │   │   │   ├── Inlines small assets
+│   │   │   │   │   ├── Falls back to file-loader
+│   │   │   ├── Optimizations
+│   │   │   │   ├── Tree shaking
+│   │   │   │   │   ├── Removes unused code
+│   │   │   │   │   ├── Enabled in production
+│   │   │   │   ├── Code splitting
+│   │   │   │   │   ├── Splits vendor, runtime, app bundles
+│   │   │   │   │   ├── Improves load time
+│   │   │   │   ├── Differential loading
+│   │   │   │   │   ├── ES2015 for modern browsers
+│   │   │   │   │   ├── ES5 for legacy browsers
+│   │   │   │   ├── Lazy loading
+│   │   │   │   │   ├── Dynamic imports
+│   │   │   │   │   ├── Reduces initial bundle size
+│   │   │   ├── Custom Webpack Config
+│   │   │   │   ├── angular.json: customWebpackConfig
+│   │   │   │   ├── webpack.config.js
+│   │   │   │   ├── Merge with default config
+│   │   │   │   ├── Use @angular-builders/custom-webpack
+│   │   ├── Esbuild Integration (Experimental)
+│   │   │   ├── Faster builds
+│   │   │   ├── Smaller bundles
+│   │   │   ├── Limitations
+│   │   │   │   ├── Limited plugin support
+│   │   │   │   ├── Experimental in v19
+│   │   │   ├── Enable: angular.json builder: '@angular-devkit/build-angular:application'
+│   │   ├── Cache
+│   │   │   ├── Disk-based cache
+│   │   │   ├── Memory-based cache
+│   │   │   ├── Enable: angular.json cache.enabled
+│   │   │   ├── Clear: ng cache clean
+│   │   │   ├── Benefits
+│   │   │   │   ├── Faster rebuilds
+│   │   │   │   ├── Incremental compilation
+│   │   ├── Best Practices
+│   │   │   ├── Use production configuration for builds
+│   │   │   ├── Enable cache for CI/CD
+│   │   │   ├── Analyze bundles with webpack-bundle-analyzer
+│   │   │   ├── Optimize third-party dependencies
+│   │   │   ├── Use tree shaking for smaller bundles
+│   │   │   ├── Experiment with Esbuild for faster builds
+│   │   │   ├── Monitor build performance
+├── Tooling Ecosystem
+│   ├── Linting
+│   │   ├── ESLint
+│   │   │   ├── @angular-eslint
+│   │   │   │   ├── eslint-plugin-angular
+│   │   │   │   ├── eslint-plugin-template
+│   │   │   │   ├── schematics for setup
+│   │   │   ├── .eslintrc.json
+│   │   │   │   ├── extends: ['plugin:@angular-eslint/recommended']
+│   │   │   │   ├── plugins: ['@angular-eslint']
+│   │   │   │   ├── rules: { <rule>: 'error' | 'warn' | 'off' }
+│   │   │   │   ├── overrides: [{ files: ['*.ts'], rules: {} }]
+│   │   │   ├── Commands
+│   │   │   │   ├── ng lint
+│   │   │   │   ├── eslint --fix
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Enforce consistent coding style
+│   │   │   │   ├── Use Angular-specific rules
+│   │   │   │   ├── Run lint in CI/CD
+│   │   │   │   ├── Fix issues automatically
+│   │   │   │   ├── Customize rules for team
+│   │   ├── TSLint (Deprecated)
+│   │   │   ├── Migrated to ESLint in v19
+│   │   │   ├── Use ng update for migration
+│   ├── Formatting
+│   │   ├── Prettier
+│   │   │   ├── npm install --save-dev prettier
+│   │   │   ├── .prettierrc
+│   │   │   │   ├── semi: boolean
+│   │   │   │   ├── trailingComma: 'es5' | 'none' | 'all'
+│   │   │   │   ├── singleQuote: boolean
+│   │   │   │   ├── printWidth: number
+│   │   │   │   ├── tabWidth: number
+│   │   │   │   ├── useTabs: boolean
+│   │   │   │   ├── bracketSpacing: boolean
+│   │   │   │   ├── arrowParens: 'avoid' | 'always'
+│   │   │   ├── .prettierignore
+│   │   │   ├── Commands
+│   │   │   │   ├── prettier --write .
+│   │   │   │   ├── prettier --check .
+│   │   │   ├── Integration with ESLint
+│   │   │   │   ├── eslint-plugin-prettier
+│   │   │   │   ├── eslint-config-prettier
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Run Prettier in pre-commit hook
+│   │   │   │   ├── Align with ESLint rules
+│   │   │   │   ├── Format on save in IDE
+│   │   │   │   ├── Use .prettierignore for generated files
+│   │   ├── Angular CLI
+│   │   │   ├── Formats via ESLint + Prettier
+│   │   │   ├── ng lint --fix
+│   ├── IDE Integration
+│   │   ├── VS Code
+│   │   │   ├── Extensions
+│   │   │   │   ├── Angular Language Service
+│   │   │   │   │   ├── Template IntelliSense
+│   │   │   │   │   ├── Autocompletion
+│   │   │   │   │   ├── Diagnostics
+│   │   │   │   ├── ESLint
+│   │   │   │   │   ├── Real-time linting
+│   │   │   │   │   ├── Fix on save
+│   │   │   │   ├── Prettier
+│   │   │   │   │   ├── Format on save
+│   │   │   │   │   ├── Format on paste
+│   │   │   │   ├── Angular Snippets
+│   │   │   │   │   ├── Code snippets for Angular
+│   │   │   │   │   ├── Component, service, pipe templates
+│   │   │   │   ├── Nx Console
+│   │   │   │   │   ├── GUI for Angular CLI/Nx
+│   │   │   │   │   ├── Run commands visually
+│   │   │   ├── Settings
+│   │   │   │   ├── editor.defaultFormatter: 'esbenp.prettier-vscode'
+│   │   │   │   ├── editor.formatOnSave: true
+│   │   │   │   ├── eslint.validate: ['typescript', 'html']
+│   │   │   │   ├── angular.enable-strict-mode-prompt: false
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Use Angular Language Service
+│   │   │   │   ├── Enable format on save
+│   │   │   │   ├── Use snippets for productivity
+│   │   │   │   ├── Sync settings with team
+│   │   ├── WebStorm
+│   │   │   ├── Built-in Angular support
+│   │   │   ├── Template debugging
+│   │   │   ├── Refactoring tools
+│   │   │   ├── ESLint/Prettier integration
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Use built-in Angular CLI integration
+│   │   │   │   ├── Enable code inspections
+│   │   │   │   ├── Use live templates
+│   │   ├── Other IDEs
+│   │   │   ├── IntelliJ IDEA
+│   │   │   ├── Sublime Text
+│   │   │   ├── Vim with plugins
+│   ├── Nx Workspace
+│   │   ├── Monorepo support
+│   │   │   ├── npm install -g nx
+│   │   │   ├── npx create-nx-workspace
+│   │   │   ├── @nrwl/angular
+│   │   │   │   ├── application
+│   │   │   │   ├── library
+│   │   │   │   ├── component
+│   │   │   │   ├── service
+│   │   │   │   ├── pipe
+│   │   │   │   ├── directive
+│   │   │   ├── Commands
+│   │   │   │   ├── nx generate @nrwl/angular:application <name>
+│   │   │   │   ├── nx build <project>
+│   │   │   │   ├── nx serve <project>
+│   │   │   │   ├── nx affected
+│   │   │   │   │   ├── Builds/tests affected projects
+│   │   │   │   │   ├── Optimizes CI/CD
+│   │   │   │   ├── nx run-many
+│   │   │   │   │   ├── Runs tasks for multiple projects
+│   │   │   │   │   ├── Parallel execution
+│   │   │   ├── nx.json
+│   │   │   │   ├── tasksRunnerOptions
+│   │   │   │   │   ├── cacheableOperations: string[]
+│   │   │   │   │   ├── parallel: number
+│   │   │   │   ├── targetDependencies
+│   │   │   │   │   ├── build: [{ target: string, projects: string }]
+│   │   │   │   ├── affected
+│   │   │   │   │   ├── defaultBase: string
+│   │   │   │   ├── plugins: string[]
+│   │   │   ├── Benefits
+│   │   │   │   ├── Scalable monorepo
+│   │   │   │   ├── Incremental builds
+│   │   │   │   ├── Dependency graph
+│   │   │   │   ├── Code sharing
+│   │   │   ├── Best Practices
+│   │   │   │   ├── Use affected for CI
+│   │   │   │   ├── Leverage caching
+│   │   │   │   ├── Modularize libraries
+│   │   │   │   ├── Enforce module boundaries
+│   │   │   │   ├── Use Nx Console for GUI
+│   ├── Best Practices
+│   │   ├── Use ESLint + Prettier
+│   │   ├── Enable IDE integrations
+│   │   ├── Use Nx for large projects
+│   │   ├── Automate formatting/linting in CI
+│   │   ├── Keep tooling updated
+│   │   ├── Document team conventions
+├── Miscellaneous Best Practices
+│   ├── Project Structure
+│   │   ├── Organize by feature
+│   │   │   ├── src/app/features/<feature>/
+│   │   │   │   ├── components/
+│   │   │   │   ├── services/
+│   │   │   │   ├── models/
+│   │   │   │   ├── pipes/
+│   │   │   │   ├── directives/
+│   │   │   │   ├── feature.module.ts
+│   │   │   │   ├── feature-routing.module.ts
+│   │   ├── Shared module
+│   │   │   ├── src/app/shared/
+│   │   │   │   ├── components/
+│   │   │   │   ├── pipes/
+│   │   │   │   ├── directives/
+│   │   │   │   ├── services/
+│   │   │   │   ├── shared.module.ts
+│   │   ├── Core module
+│   │   │   ├── src/app/core/
+│   │   │   │   ├── services/
+│   │   │   │   ├── interceptors/
+│   │   │   │   ├── guards/
+│   │   │   │   ├── core.module.ts
+│   │   ├── Assets
+│   │   │   ├── src/assets/
+│   │   │   │   ├── images/
+│   │   │   │   ├── fonts/
+│   │   │   │   ├── i18n/
+│   │   │   │   ├── icons/
+│   │   ├── Best Practices
+│   │   │   ├── Keep features modular
+│   │   │   ├── Minimize shared module
+│   │   │   ├── Use core for singletons
+│   │   │   ├── Lazy load feature modules
+│   │   │   ├── Optimize asset organization
+│   ├── Code Quality
+│   │   ├── Use TypeScript strict mode
+│   │   │   ├── tsconfig.json
+│   │   │   │   ├── strict: true
+│   │   │   │   ├── noImplicitAny: true
+│   │   │   │   ├── strictNullChecks: true
+│   │   │   │   ├── strictPropertyInitialization: true
+│   │   │   │   ├── noImplicitThis: true
+│   │   │   │   ├── alwaysStrict: true
+│   │   ├── Use interfaces for types
+│   │   │   ├── interface User { id: number; name: string; }
+│   │   │   ├── Avoid any type
+│   │   │   ├── Use type aliases for complex types
+│   │   ├── Consistent naming
+│   │   │   ├── Components: UserProfileComponent
+│   │   │   ├── Services: UserService
+│   │   │   ├── Pipes: UserFilterPipe
+│   │   │   ├── Directives: UserHighlightDirective
+│   │   │   ├── Files: user-profile.component.ts
+│   │   ├── Avoid large components
+│   │   │   ├── Break into smaller components
+│   │   │   ├── Use container-presenter pattern
+│   │   │   ├── Leverage directives for behavior
+│   │   ├── Use standalone components
+│   │   │   ├── @Component({ standalone: true })
+│   │   │   ├── Import dependencies directly
+│   │   │   ├── Simplify module structure
+│   │   ├── Best Practices
+│   │   │   ├── Enforce TypeScript strictness
+│   │   │   ├── Use consistent naming
+│   │   │   ├── Modularize code
+│   │   │   ├── Refactor large components
+│   │   │   ├── Prefer standalone components
+│   │   │   ├── Document complex logic
+│   ├── Debugging
+│   │   ├── Chrome DevTools
+│   │   │   ├── Angular DevTools extension
+│   │   │   │   ├── Component explorer
+│   │   │   │   ├── Change detection profiling
+│   │   │   │   ├── Directive inspection
+│   │   │   ├── Sources panel
+│   │   │   │   ├── Breakpoints in TypeScript
+│   │   │   │   ├── Source maps
+│   │   │   ├── Network panel
+│   │   │   │   ├── Monitor API calls
+│   │   │   │   ├── Check resource loading
+│   │   │   ├── Performance panel
+│   │   │   │   ├── Profile change detection
+│   │   │   │   ├── Identify bottlenecks
+│   │   ├── Console
+│   │   │   ├── console.log for quick debugging
+│   │   │   ├── console.table for structured data
+│   │   │   ├── console.error for errors
+│   │   ├── IDE Debugging
+│   │   │   ├── VS Code debugger
+│   │   │   │   ├── launch.json
+│   │   │   │   ├── Breakpoints
+│   │   │   │   ├── Watch expressions
+│   │   │   ├── WebStorm debugger
+│   │   │   │   ├── Run configurations
+│   │   │   │   ├── Template debugging
+│   │   ├── Best Practices
+│   │   │   ├── Use Angular DevTools
+│   │   │   ├── Enable source maps
+│   │   │   ├── Profile performance
+│   │   │   ├── Avoid console.log in production
+│   │   │   ├── Use IDE for complex debugging
+│   │   │   ├── Log errors centrally
